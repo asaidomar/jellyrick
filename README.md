@@ -4,7 +4,8 @@ API to post comments about Rick & Morty universe
 
 ## Dev quick start 🚀
 
-Prerequisites: 
+Prerequisites:
+
 - git installed
 - Linux, Mac or WSL environment
 - docker and docker-compose installed : https://docs.docker.com/compose/install/
@@ -31,7 +32,7 @@ mysql -u rick -p'morty' -h db -D universe
 
 ## Tasks
 
-- [x]  Init base files
+- [x]  Init base files (15 minutes)
     - [x]  Create project on github
     - [x]  Add readme
     - [x]  Add .gitignore
@@ -40,8 +41,9 @@ mysql -u rick -p'morty' -h db -D universe
     - [x]  DB dev environment
         - [x]  Dockerfile
         - [x]  docker-compose
-    - [ ]  Init the db structure, dump it, put the dump in
-    - [ ]  Retrieve characters and episodes data from the web and write it to JSON
+    - [x]  Init the db structure, dump it, put the dump in db container entrypoint
+    - [x]  Retrieve characters and episodes data from the web (rickandmortyapi.com) and write it to
+      JSON : [script](./db/script/write_from_web_to_json.py), [data](./db/rick_data.json)
     - [ ]  Python import script
     - [ ]  Fastapi base structure
     - [ ]  api dev environment
