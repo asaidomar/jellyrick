@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-""" USAGE: 'chmod +x write_from_web_to_json.py && ./write_from_web_to_json.py'"""
+""" USAGE: 'chmod +x write_from_web_to_json.py && ./write_from_web_to_json.py <OUTPUT_FILE>'"""
 
 import json
+import sys
 
 import requests
 
@@ -24,5 +25,6 @@ json_result = {
     "episode": get_result(episode_api_url),
     "character": get_result(character_api_url),
 }
-with open("../rick_data.json", "w") as file:
+
+with open(sys.argv[1], "w") as file:
     json.dump(json_result, file, indent=4)
