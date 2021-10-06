@@ -4,6 +4,11 @@ API to post comments about Rick & Morty universe
 
 ## Dev quick start 🚀
 
+Prerequisites: 
+- git installed
+- Linux, Mac or WSL environment
+- docker and docker-compose installed : https://docs.docker.com/compose/install/
+
 ```bash
 git clone git@github.com:benjmathias/jellyrick.git
 cd jellyrick
@@ -32,9 +37,9 @@ mysql -u rick -p'morty' -h db -D universe
     - [x]  Add .gitignore
     - [x]  Add CHANGELOG
 - [ ]  Feature 1
-    - [ ]  DB dev environment
-        - [ ]  Dockerfile
-        - [ ]  docker-compose
+    - [x]  DB dev environment
+        - [x]  Dockerfile
+        - [x]  docker-compose
     - [ ]  Init the db structure, dump it, put the dump in
     - [ ]  Retrieve characters and episodes data from the web and write it to JSON
     - [ ]  Python import script
