@@ -1,4 +1,4 @@
-# Jellysmack
+# Jellyrick
 
 API to post comments about Rick & Morty universe
 
