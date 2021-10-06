@@ -16,10 +16,7 @@ def create_connection(host_name, database, user_name, user_password):
     connection = None
     try:
         connection = mysql.connector.connect(
-            host=host_name,
-            database=database,
-            user=user_name,
-            passwd=user_password
+            host=host_name, database=database, user=user_name, passwd=user_password
         )
         print("Connection to MySQL DB successful")
     except Error as e:
@@ -39,7 +36,7 @@ def execute_query(connection, query):
 
 
 def insert_entities(json_ent_key, conn):
-    entities = [f"(\"{i}\"),\n" for i in json_rick_data[json_ent_key]]
+    entities = [f'("{i}"),\n' for i in json_rick_data[json_ent_key]]
     entities = "".join(entities).rstrip(",\n")
     create_episodes = f"""
     INSERT INTO
