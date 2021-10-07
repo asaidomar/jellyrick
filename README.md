@@ -68,7 +68,7 @@ mysql -u rick -p'morty' -h db -D universe
         - [x]  docker-compose
     - [x]  Init the db structure, dump it, put the dump in db container entrypoint
     - [x]  Retrieve characters and episodes data from the web (rickandmortyapi.com) and write it to
-      JSON : ([script](./db/script/write_from_web_to_json.py), [data](./db/rick_data.json))
+      JSON : ([script](./db/script/write_from_web_to_json.py), [data_example](./db/data_source/rick_data_episode.json))
     - [x]  Python import script ([script](./db/script/insert_from_json_to_db.py))
     - [ ]  Fastapi base structure
     - [ ]  api dev environment
