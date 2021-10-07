@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  jellyrick:
+    build:
+      context: ..
+      dockerfile: ./api/dev.Dockerfile
+    image: jellyrick-api:dev
+    container_name: jellyrick-api
+    ports:
+      - "80:80"
+    entrypoint: /dev.entrypoint.sh
+    environment:
+      PORT: 80
+      MYSQL_USER: rick
+      MYSQL_PASSWORD: morty
+      MYSQL_HOST: db
+      MYSQL_DB: universe
+    volumes:
+      - ${PWD}/../api:/app
+    depends_on:
+      - db
+
+  db:
+    platform: linux/x86_64
+    build:
+      context: ../db
+      dockerfile: ./Dockerfile
+    image: rick-db:dev
+    container_name: rick-db
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "universe"
+      MYSQL_USER: "rick"
+      MYSQL_PASSWORD: "morty"
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - "3306:3306"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
