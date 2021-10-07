@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 
-from .routers import status_route
+from .routers import episode_route
 
 app = FastAPI()
 prefix = "/api/v1"
 
-app.include_router(status_route.router, prefix=prefix)
+app.include_router(episode_route.router, prefix=prefix)

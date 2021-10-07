@@ -6,16 +6,26 @@ API to post comments about Rick & Morty universe
 
 Prerequisites:
 
-- git installed
+- git installed (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - Linux, Mac or WSL environment
-- docker and docker-compose installed : https://docs.docker.com/compose/install/
-- python3, python3-pip installed
+- docker and docker-compose installed (https://docs.docker.com/compose/install/)
+- python3, python3-pip installed (https://pip.pypa.io/en/stable/installation/)
 
 ```bash
 git clone git@github.com:benjmathias/jellyrick.git
-cd jellyrick
+cd jellyrick/devops
+
+# Optional parallel build for faster build time
+docker-compose -f dev.docker-compose.yml build --parallel jellyrick db
+
 docker-compose -f dev.docker-compose.yml up
 ```
+
+Access the interactive openapi docs with : 
+- http://localhost/docs
+
+**Live reload functionality**.  
+Change the python source code and see the front reload live, enjoy !
 
 ## Database usage 📙
 
@@ -24,6 +34,7 @@ Follow the "dev quick start" step above first !
 - Get data from api with a python script ([script](./db/script/write_from_web_to_json.py)) :
 
 ```bash
+# cd to this project root
 cd db/script
 chmod +x write_from_web_to_json.py
 ./write_from_web_to_json.py "../data_source"
@@ -33,6 +44,7 @@ chmod +x write_from_web_to_json.py
 
 ```bash
 pip3 install mysql-connector-python
+# cd to this project root
 cd db/script
 chmod +x insert_from_json_to_db.py
 ./insert_from_json_to_db.py "universe" "root" "root" "../data_source"
@@ -41,7 +53,7 @@ chmod +x insert_from_json_to_db.py
 You can check with adminer front that the data has been inserted, connect with "universe" database and "root" "root"
 credentials :
 
-- http://localhost/?server=db&username=root&db=universe&select=character
+- http://localhost:8080/?server=db&username=root&db=universe&select=character
 
 To connect with mysql-client cli to DB from host :
 
@@ -70,10 +82,10 @@ mysql -u rick -p'morty' -h db -D universe
     - [x]  Retrieve characters and episodes data from the web (rickandmortyapi.com) and write it to
       JSON : ([script](./db/script/write_from_web_to_json.py), [data_example](./db/data_source/rick_data_episode.json))
     - [x]  Python import script ([script](./db/script/insert_from_json_to_db.py))
-    - [ ]  Fastapi base structure
-    - [ ]  api dev environment
-        - [ ]  Dockerfile
-        - [ ]  docker-compose
+    - [x]  Fastapi base structure
+    - [x]  api dev environment
+        - [x]  Dockerfile
+        - [x]  docker-compose
     - [ ]  Add db insertion script at the beginning of the dev entrypoint of the API
     - [ ]  Write test for the two routes (retrieve data from mysql)
     - [ ]  Write the two routes (retrieve data from mysql)

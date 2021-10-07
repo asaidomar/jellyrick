@@ -1,9 +1,26 @@
-version: "3"
+version: '3'
+
 services:
+  jellyrick:
+    build:
+      context: ..
+      dockerfile: ./api/Dockerfile
+    image: jellyrick-api:dev
+    container_name: jellyrick-api
+    ports:
+      - "80:80"
+    entrypoint: /dev.entrypoint.sh
+    environment:
+      PORT: 80
+    volumes:
+      - ${PWD}/../api:/app
+    depends_on:
+      - db
+
   db:
     platform: linux/x86_64
     build:
-      context: ./db
+      context: ../db
       dockerfile: ./Dockerfile
     image: rick-db:dev
     container_name: rick-db
@@ -20,5 +37,4 @@ services:
     image: adminer
     restart: always
     ports:
-      - "80:8080"
-
+      - "8080:8080"
