@@ -15,7 +15,7 @@ Prerequisites:
 git clone git@github.com:benjmathias/jellyrick.git
 cd jellyrick/devops
 
-# Optional parallel build for faster build time
+# Optional parallel build for faster builds
 docker-compose -f dev.docker-compose.yml build --parallel jellyrick db
 
 docker-compose -f dev.docker-compose.yml up
@@ -34,6 +34,7 @@ Follow the "dev quick start" step above first !
 - Get data from api with a python script ([script](./db/script/write_from_web_to_json.py)) :
 
 ```bash
+pip3 install requests
 # cd to this project root
 cd db/script
 chmod +x write_from_web_to_json.py
@@ -47,7 +48,7 @@ pip3 install mysql-connector-python
 # cd to this project root
 cd db/script
 chmod +x insert_from_json_to_db.py
-./insert_from_json_to_db.py "universe" "root" "root" "../data_source"
+./insert_from_json_to_db.py "universe" "root" "root" "db" "../data_source"
 ```
 
 You can check with adminer front that the data has been inserted, connect with "universe" database and "root" "root"
@@ -86,6 +87,6 @@ mysql -u rick -p'morty' -h db -D universe
     - [x]  api dev environment
         - [x]  Dockerfile
         - [x]  docker-compose
-    - [ ]  Add db insertion script at the beginning of the dev entrypoint of the API
+    - [x]  Add db insertion script at the beginning of the dev entrypoint of the API
     - [ ]  Write test for the two routes (retrieve data from mysql)
     - [ ]  Write the two routes (retrieve data from mysql)

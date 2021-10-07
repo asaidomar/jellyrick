@@ -4,7 +4,7 @@ services:
   jellyrick:
     build:
       context: ..
-      dockerfile: ./api/Dockerfile
+      dockerfile: ./api/dev.Dockerfile
     image: jellyrick-api:dev
     container_name: jellyrick-api
     ports:

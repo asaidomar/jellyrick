@@ -2,7 +2,7 @@
 
 """ USAGE:
 - chmod +x insert_from_json_to_db.py
-- ./insert_from_json_to_db.py <MYSQL_DATABASE> <MYSQL_USER> <MYSQL_PASSWORD> <JSON_SOURCE_FILE_PATH>
+- ./insert_from_json_to_db.py <MYSQL_DATABASE> <MYSQL_USER> <MYSQL_PASSWORD> <MYSQL_HOSTNAME> <JSON_SOURCE_FILE_PATH>
 """
 
 import json
@@ -13,7 +13,7 @@ import mysql.connector
 from mysql.connector import Error
 
 
-def create_connection(host_name, database, user_name, user_password):
+def create_connection(database, user_name, user_password, host_name):
     connection = None
     try:
         connection = mysql.connector.connect(
@@ -56,8 +56,9 @@ if __name__ == "__main__":
     MYSQL_DATABASE = sys.argv[1]
     MYSQL_USER = sys.argv[2]
     MYSQL_PASSWORD = sys.argv[3]
-    JSON_SOURCE_FILE_PATH = sys.argv[4]
-    my_conn = create_connection("127.0.0.1", MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD)
+    MYSQL_HOSTNAME = sys.argv[4]
+    JSON_SOURCE_FILE_PATH = sys.argv[5]
+    my_conn = create_connection(MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOSTNAME)
 
     sources_json_data_path = glob.glob(f"{JSON_SOURCE_FILE_PATH}/*.json")
     sources_json = []
