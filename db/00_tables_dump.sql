@@ -1,12 +1,14 @@
 CREATE TABLE `episode` (
   `episodeid` INT UNSIGNED NOT NULL auto_increment,
   `name` VARCHAR(200) NOT NULL,
+  UNIQUE KEY `name` (`name`),
   PRIMARY KEY (`episodeid`)
 ) engine = innodb;
 
 CREATE TABLE `character` (
   `characterid` INT UNSIGNED NOT NULL auto_increment,
   `name` VARCHAR(200) NOT NULL,
+  UNIQUE KEY `name` (`name`),
   PRIMARY KEY (`characterid`)
 ) engine = innodb;
 

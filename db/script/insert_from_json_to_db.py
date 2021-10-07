@@ -42,7 +42,7 @@ def insert_entity(json_ent_key, source_data, conn):
         entities = [f'("{i}"),\n' for i in source_data[col]]
         entities = "".join(entities).rstrip(",\n")
         create_episodes = f"""
-        INSERT INTO
+        INSERT IGNORE INTO
           `{json_ent_key}` (`{col}`)
         VALUES
             {entities}

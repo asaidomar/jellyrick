@@ -12,6 +12,10 @@ services:
     entrypoint: /dev.entrypoint.sh
     environment:
       PORT: 80
+      MYSQL_USER: rick
+      MYSQL_PASSWORD: morty
+      MYSQL_HOST: db
+      MYSQL_DB: universe
     volumes:
       - ${PWD}/../api:/app
     depends_on:

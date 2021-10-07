@@ -88,5 +88,6 @@ mysql -u rick -p'morty' -h db -D universe
         - [x]  Dockerfile
         - [x]  docker-compose
     - [x]  Add db insertion script at the beginning of the dev entrypoint of the API
-    - [ ]  Write test for the two routes (retrieve data from mysql)
-    - [ ]  Write the two routes (retrieve data from mysql)
+    - [x]  Write the two routes (retrieve data from mysql)
+    - [ ]  Write unit test for the two routes
+    - [ ]  BONUS : Write functional test (fastapi.testclient)

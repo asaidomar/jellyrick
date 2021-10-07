@@ -37,6 +37,7 @@ if __name__ == "__main__":
         },
     }
 
+    print("Fetching rick and morty data from web...")
     for entity in source:
         with open(source[entity]["file_path"], "w") as file:
             json_to_dump = {entity: source[entity]["json_result"]}
