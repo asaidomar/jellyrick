@@ -9,6 +9,7 @@ Prerequisites:
 - git installed
 - Linux, Mac or WSL environment
 - docker and docker-compose installed : https://docs.docker.com/compose/install/
+- python3, python3-pip installed
 
 ```bash
 git clone git@github.com:benjmathias/jellyrick.git
@@ -20,20 +21,21 @@ docker-compose -f dev.docker-compose.yml up
 
 Follow the "dev quick start" step above first !
 
-- Scrape data from the web with this script : [script](./db/script/write_from_web_to_json.py) :
+- Get data from api with a python script ([script](./db/script/write_from_web_to_json.py)) :
 
 ```bash
 cd db/script
 chmod +x write_from_web_to_json.py
-./write_from_web_to_json.py "../rick_data.json"
+./write_from_web_to_json.py "../data_source"
 ```
 
 - Script usage to insert data from json file to DB ([script](./db/script/insert_from_json_to_db.py)) :
 
 ```bash
+pip3 install mysql-connector-python
 cd db/script
 chmod +x insert_from_json_to_db.py
-./insert_from_json_to_db.py "universe" "root" "root" "../rick_data.json"
+./insert_from_json_to_db.py "universe" "root" "root" "../data_source"
 ```
 
 You can check with adminer front that the data has been inserted, connect with "universe" database and "root" "root"

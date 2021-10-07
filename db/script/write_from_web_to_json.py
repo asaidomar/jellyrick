@@ -1,30 +1,43 @@
 #!/usr/bin/env python3
 
-""" USAGE: 'chmod +x write_from_web_to_json.py && ./write_from_web_to_json.py <OUTPUT_FILE>'"""
+""" USAGE: 'chmod +x write_from_web_to_json.py && ./write_from_web_to_json.py <OUTPUT_PATH>'"""
 
 import json
 import sys
 
 import requests
 
-base_api_url = "https://rickandmortyapi.com/api"
-episode_api_url = f"{base_api_url}/episode"
-character_api_url = f"{base_api_url}/character"
 
-
-def get_result(url):
+def get_result(url, column_name):
     result = []
     pages_total_number = requests.get(url).json()["info"]["pages"]
     for i in range(pages_total_number):
         page_result = requests.get(f"{url}?page={i + 1}").json()["results"]
         result.extend([i["name"] for i in page_result])
-    return result
+    return {column_name: result}
 
 
-json_result = {
-    "episode": get_result(episode_api_url),
-    "character": get_result(character_api_url),
-}
+if __name__ == "__main__":
+    FILE_PATH = sys.argv[1]
+    FILE_PATH_EPISODE = f"{FILE_PATH}/rick_data_episode.json"
+    FILE_PATH_CHARACTER = f"{FILE_PATH}/rick_data_character.json"
 
-with open(sys.argv[1], "w") as file:
-    json.dump(json_result, file, indent=4)
+    BASE_API_URL = "https://rickandmortyapi.com/api"
+    EPISODE_API_URL = f"{BASE_API_URL}/episode"
+    CHARACTER_API_URL = f"{BASE_API_URL}/character"
+
+    source = {
+        "episode": {
+            "file_path": FILE_PATH_EPISODE,
+            "json_result": get_result(EPISODE_API_URL, column_name="name"),
+        },
+        "character": {
+            "file_path": FILE_PATH_CHARACTER,
+            "json_result": get_result(CHARACTER_API_URL, column_name="name"),
+        },
+    }
+
+    for entity in source:
+        with open(source[entity]["file_path"], "w") as file:
+            json_to_dump = {entity: source[entity]["json_result"]}
+            json.dump(json_to_dump, file, indent=4)
