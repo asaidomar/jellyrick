@@ -6,8 +6,8 @@ API to post comments about Rick & Morty universe
 
 Prerequisites:
 
-- git installed (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - Linux, Mac or WSL environment
+- git installed (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - docker and docker-compose installed (https://docs.docker.com/compose/install/)
 - python3, python3-pip installed (https://pip.pypa.io/en/stable/installation/)
 
@@ -65,7 +65,20 @@ mysql -u root -p'root' -h 127.0.0.1 -D universe
 To connect with mysql-client cli to DB from inside the API container :
 
 ```bash
+docker exec -it jellyrick-api bash
+apk add --update mysql-client mariadb-connector-c
 mysql -u rick -p'morty' -h db -D universe
+```
+
+## Tests
+
+### Unit test
+
+To run the unit tests of this project and show coverage, run these commands :
+```bash
+pip3 install pytest pytest-cov
+# cd to this project root
+pytest --cov=api/app api/tests/
 ```
 
 ## Tasks
@@ -89,5 +102,6 @@ mysql -u rick -p'morty' -h db -D universe
         - [x]  docker-compose
     - [x]  Add db insertion script at the beginning of the dev entrypoint of the API
     - [x]  Write the two routes (retrieve data from mysql)
-    - [ ]  Write unit test for the two routes
+    - [x]  Write unit test for the two routes
+    - [ ]  BONUS : more unit tests (fail case test and others)
     - [ ]  BONUS : Write functional test (fastapi.testclient)

@@ -17,7 +17,10 @@ def create_connection(database, user_name, user_password, host_name):
     connection = None
     try:
         connection = mysql.connector.connect(
-            host=host_name, database=database, user=user_name, passwd=user_password,
+            host=host_name,
+            database=database,
+            user=user_name,
+            passwd=user_password,
         )
         print("Connection to MySQL DB successful")
     except Error as e:
@@ -47,8 +50,10 @@ def insert_entity(json_ent_key, source_data, conn):
         VALUES
             {entities}
         """
-        print(f"\n--- Data from json are being inserted to "
-              f"MYSQL table \"{json_ent_key}\" and column \"{col}\"...")
+        print(
+            f"\n--- Data from json are being inserted to "
+            f'MYSQL table "{json_ent_key}" and column "{col}"...'
+        )
         execute_query(conn, create_episodes)
 
 
@@ -58,7 +63,9 @@ if __name__ == "__main__":
     MYSQL_PASSWORD = sys.argv[3]
     MYSQL_HOSTNAME = sys.argv[4]
     JSON_SOURCE_FILE_PATH = sys.argv[5]
-    my_conn = create_connection(MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOSTNAME)
+    my_conn = create_connection(
+        MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOSTNAME
+    )
 
     sources_json_data_path = glob.glob(f"{JSON_SOURCE_FILE_PATH}/*.json")
     sources_json = []
