@@ -1,4 +1,4 @@
-# Jellyrick
+# JellyRick
 
 API to post comments about Rick & Morty universe
 
@@ -15,19 +15,20 @@ Prerequisites:
 git clone git@github.com:benjmathias/jellyrick.git
 cd jellyrick/devops
 
-# Optional parallel build for faster builds
+# Optional command : parallel build for faster builds
 docker-compose -f dev.docker-compose.yml build --parallel jellyrick db
 
 docker-compose -f dev.docker-compose.yml up
 ```
 
-Access the interactive openapi docs with : 
+Access the interactive openapi docs with :
+
 - http://localhost/docs
 
 **Live reload functionality**.  
 Change the python source code and see the front reload live, enjoy !
 
-## Database usage 📙
+## Database usage 📚
 
 Follow the "dev quick start" step above first !
 
@@ -70,25 +71,26 @@ apk add --update mysql-client mariadb-connector-c
 mysql -u rick -p'morty' -h db -D universe
 ```
 
-## Tests
+## Tests 🔎
 
 ### Unit test
 
 To run the unit tests of this project and show coverage, run these commands :
+
 ```bash
 pip3 install pytest pytest-cov
 # cd to this project root
 pytest --cov=api/app api/tests/
 ```
 
-## Tasks
+## Tasks 🖊️
 
 - [x]  Init base files (15 minutes)
     - [x]  Create project on github
     - [x]  Add readme
     - [x]  Add .gitignore
     - [x]  Add CHANGELOG
-- [ ]  Feature 1
+- [x]  Feature 1
     - [x]  DB dev environment
         - [x]  Dockerfile
         - [x]  docker-compose
@@ -105,3 +107,6 @@ pytest --cov=api/app api/tests/
     - [x]  Write unit test for the two routes
     - [ ]  BONUS : more unit tests (fail case test and others)
     - [ ]  BONUS : Write functional test (fastapi.testclient)
+- [x]  Feature 2
+    - [x]  DB structure for comment table
+    - [x]  Populate data for new table
