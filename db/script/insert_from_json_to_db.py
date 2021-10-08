@@ -5,15 +5,24 @@
 - ./insert_from_json_to_db.py <MYSQL_DATABASE> <MYSQL_USER> <MYSQL_PASSWORD> <MYSQL_HOSTNAME> <JSON_SOURCE_FILE_PATH>
 """
 
+import glob
 import json
 import sys
-import glob
 
 import mysql.connector
-from mysql.connector import Error
+from mysql.connector import Error, MySQLConnection
 
 
-def create_connection(database, user_name, user_password, host_name):
+def create_connection(
+    database: str, user_name: str, user_password: str, host_name: str
+) -> MySQLConnection:
+    """
+    :param database:
+    :param user_name:
+    :param user_password:
+    :param host_name:
+    :return: connection instance of MySQLConnection
+    """
     connection = None
     try:
         connection = mysql.connector.connect(
@@ -30,7 +39,13 @@ def create_connection(database, user_name, user_password, host_name):
     return connection
 
 
-def execute_query(connection, query):
+def execute_query(connection: MySQLConnection, query: str) -> None:
+    """
+    execute query to mysql db
+    :param connection:
+    :param query: sql query string
+    :return:
+    """
     cursor = connection.cursor()
     try:
         cursor.execute(query)
@@ -40,7 +55,13 @@ def execute_query(connection, query):
         print(f"The error '{e}' occurred")
 
 
-def insert_entity(json_ent_key, source_data, conn):
+def insert_entity(json_ent_key: str, source_data: dict, conn: MySQLConnection) -> None:
+    """
+    :param json_ent_key: match the mysql table
+    :param source_data: data that will be inserted to the database
+    :param conn:
+    :return:
+    """
     for col in source_data:
         entities = [f'("{i}"),\n' for i in source_data[col]]
         entities = "".join(entities).rstrip(",\n")
