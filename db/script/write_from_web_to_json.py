@@ -28,6 +28,7 @@ def get_and_write_char_episode_result(
     file_path: str, url: str, characters: list
 ) -> None:
     """
+    !!! Not exhaustive (too much data)
     Write data from api to a csv file
     :param file_path: file path string
     :param url: api url
