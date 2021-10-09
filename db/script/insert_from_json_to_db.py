@@ -65,7 +65,7 @@ def insert_entity(json_ent_key: str, source_data: dict, conn: MySQLConnection) -
     for col in source_data:
         entities = [f'("{i}"),\n' for i in source_data[col]]
         entities = "".join(entities).rstrip(",\n")
-        create_episodes = f"""
+        create_episodes_query = f"""
         INSERT IGNORE INTO
           `{json_ent_key}` (`{col}`)
         VALUES
@@ -75,7 +75,7 @@ def insert_entity(json_ent_key: str, source_data: dict, conn: MySQLConnection) -
             f"\n--- Data from json are being inserted to "
             f'MYSQL table "{json_ent_key}" and column "{col}"...'
         )
-        execute_query(conn, create_episodes)
+        execute_query(conn, create_episodes_query)
 
 
 if __name__ == "__main__":

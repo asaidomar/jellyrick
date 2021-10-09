@@ -18,7 +18,12 @@ cd jellyrick/devops
 # Optional command : parallel build for faster builds
 docker-compose -f dev.docker-compose.yml build --parallel jellyrick db
 
-docker-compose -f dev.docker-compose.yml up
+docker-compose -f dev.docker-compose.yml up -d
+```
+
+Access logs with : 
+```bash
+docker-compose -f dev.docker-compose.yml logs -f
 ```
 
 Access the interactive openapi docs with :
@@ -110,3 +115,4 @@ pytest --cov=api/app api/tests/
 - [x]  Feature 2
     - [x]  DB structure for comment table
     - [x]  Populate data for new table
+    - [x]  Write CRUD routes for comments

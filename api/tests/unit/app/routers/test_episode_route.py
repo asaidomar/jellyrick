@@ -7,7 +7,7 @@ FETCHALL_MOCKED_RETURN = [[1, "episode1"], [2, "episode2"]]
 
 class TestEpisodeRoute(unittest.TestCase):
     def test_episode_route(self):
-        from api.app.routers.episode_route import episode_route
+        from api.app.routers.episode_router import episode_route
 
         connection_mock = Mock(
             cursor=Mock(

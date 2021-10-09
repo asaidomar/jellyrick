@@ -1,5 +1,48 @@
 LOCK TABLES `episode` WRITE;
-/*!40000 ALTER TABLE `episode` DISABLE KEYS */;
-INSERT INTO `episode` VALUES (1,'Mortynight Run',NULL),(2,'Morty\'s Mind Blowers',NULL),(3,'Interdimensional Cable 2: Tempting Fate',NULL),(4,'Star Mort: Rickturn of the Jerri',NULL),(5,'A Rickle in Time',NULL),(6,'Raising Gazorpazorp',NULL),(7,'Pickle Rick',NULL),(8,'Rickmancing the Stone',NULL),(9,'Rattlestar Ricklactica',NULL),(10,'Look Who\'s Purging Now',NULL),(11,'M. Night Shaym-Aliens!',NULL),(12,'The Old Man and the Seat',NULL),(13,'The Rickshank Rickdemption',NULL),(14,'Pilot',NULL),(15,'Vindicators 3: The Return of Worldender',NULL),(16,'The ABC\'s of Beth',NULL),(17,'Never Ricking Morty',NULL),(18,'The Rickchurian Mortydate',NULL),(19,'Get Schwifty',NULL),(20,'Rixty Minutes',NULL),(21,'Promortyus',NULL),(22,'The Vat of Acid Episode',NULL),(23,'Big Trouble in Little Sanchez',NULL),(24,'Anatomy Park',NULL),(25,'Lawnmower Dog',NULL),(26,'Auto Erotic Assimilation',NULL),(27,'Rick Potion #9',NULL),(28,'Edge of Tomorty: Rick, Die, Rickpeat',NULL),(29,'Childrick of Mort',NULL),(30,'The Ricks Must Be Crazy',NULL),(31,'The Wedding Squanchers',NULL),(32,'Meeseeks and Destroy',NULL),(33,'Claw and Hoarder: Special Ricktim\'s Morty',NULL),(34,'The Ricklantis Mixup',NULL),(35,'Something Ricked This Way Comes',NULL),(36,'Total Rickall',NULL),(37,'Close Rick-counters of the Rick Kind',NULL),(38,'Rest and Ricklaxation',NULL),(39,'One Crew Over the Crewcoo\'s Morty',NULL),(40,'Ricksy Business',NULL),(41,'The Whirly Dirly Conspiracy',NULL);
-/*!40000 ALTER TABLE `episode` ENABLE KEYS */;
+/*!40000 ALTER TABLE `episode`
+    DISABLE KEYS */;
+INSERT INTO `episode`
+VALUES (5, 'A Rickle in Time'),
+       (24, 'Anatomy Park'),
+       (26, 'Auto Erotic Assimilation'),
+       (23, 'Big Trouble in Little Sanchez'),
+       (29, 'Childrick of Mort'),
+       (33, 'Claw and Hoarder: Special Ricktim\'s Morty'),
+       (37, 'Close Rick-counters of the Rick Kind'),
+       (28, 'Edge of Tomorty: Rick, Die, Rickpeat'),
+       (19, 'Get Schwifty'),
+       (3, 'Interdimensional Cable 2: Tempting Fate'),
+       (25, 'Lawnmower Dog'),
+       (10, 'Look Who\'s Purging Now'),
+       (11, 'M. Night Shaym-Aliens!'),
+       (32, 'Meeseeks and Destroy'),
+       (2, 'Morty\'s Mind Blowers'),
+       (1, 'Mortynight Run'),
+       (17, 'Never Ricking Morty'),
+       (39, 'One Crew Over the Crewcoo\'s Morty'),
+       (7, 'Pickle Rick'),
+       (14, 'Pilot'),
+       (21, 'Promortyus'),
+       (6, 'Raising Gazorpazorp'),
+       (9, 'Rattlestar Ricklactica'),
+       (38, 'Rest and Ricklaxation'),
+       (27, 'Rick Potion #9'),
+       (8, 'Rickmancing the Stone'),
+       (40, 'Ricksy Business'),
+       (20, 'Rixty Minutes'),
+       (35, 'Something Ricked This Way Comes'),
+       (4, 'Star Mort: Rickturn of the Jerri'),
+       (16, 'The ABC\'s of Beth'),
+       (12, 'The Old Man and the Seat'),
+       (18, 'The Rickchurian Mortydate'),
+       (34, 'The Ricklantis Mixup'),
+       (30, 'The Ricks Must Be Crazy'),
+       (13, 'The Rickshank Rickdemption'),
+       (22, 'The Vat of Acid Episode'),
+       (31, 'The Wedding Squanchers'),
+       (41, 'The Whirly Dirly Conspiracy'),
+       (36, 'Total Rickall'),
+       (15, 'Vindicators 3: The Return of Worldender');
+/*!40000 ALTER TABLE `episode`
+    ENABLE KEYS */;
 UNLOCK TABLES;
