@@ -7,7 +7,7 @@ FETCHALL_MOCKED_RETURN = [[1, "character1"], [2, "character2"]]
 
 class TestCharacterRoute(unittest.TestCase):
     def test_character_route(self):
-        from api.app.routers.character_route import character_route
+        from api.app.routers.character_router import character_route
 
         connection_mock = Mock(
             cursor=Mock(
