@@ -62,14 +62,16 @@ class Table:
     names = TableNames
 
     # Episode and character
-    episode_col_names = EpisodeCol
-    character_col_names = CharacterCol
-    episode_character_appearance_col_names = EpisodeCharacterAppearanceCol
+    episode_col_names: type(EpisodeCol) = EpisodeCol
+    character_col_names: type(CharacterCol) = CharacterCol
+    episode_character_appearance_col_names: type(
+        EpisodeCharacterAppearanceCol
+    ) = EpisodeCharacterAppearanceCol
 
     # Comment
-    comment_col_names = CommentCol
-    episode_comment_col_names = EpisodeCommentCol
-    character_comment_col_names = CharacterCommentCol
-    episode_character_appearance_comment_col_names = (
+    comment_col_names: type(EpisodeCol) = CommentCol
+    episode_comment_col_names: type(EpisodeCommentCol) = EpisodeCommentCol
+    character_comment_col_names: type(CharacterCommentCol) = CharacterCommentCol
+    episode_character_appearance_comment_col_names: type(
         EpisodeCharacterAppearanceCommentCol
-    )
+    ) = EpisodeCharacterAppearanceCommentCol
