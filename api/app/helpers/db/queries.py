@@ -3,7 +3,7 @@ from typing import Any
 from mysql.connector import MySQLConnection, Error as MySQLError
 
 
-class Query:
+class DbQuery:
     def __init__(self, connection: MySQLConnection, query: str) -> None:
         self.__connection = connection
         # Have fun ;)
