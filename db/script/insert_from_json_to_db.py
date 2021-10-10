@@ -50,7 +50,7 @@ def execute_query(connection: MySQLConnection, query: str) -> None:
     try:
         cursor.execute(query)
         connection.commit()
-        print("Query executed successfully")
+        print("DbQuery executed successfully")
     except Error as e:
         print(f"The error '{e}' occurred")
 

@@ -1,13 +1,13 @@
 from string import Template
+from typing import Dict
 
-from fastapi import Depends, APIRouter
+from fastapi import Depends, APIRouter, Query
 from mysql.connector import MySQLConnection
 from pydantic import BaseModel
 
 from app.config import get_settings, Settings
-from app.helpers.db.queries import Query
+from app.helpers.db.queries import DbQuery
 from app.helpers.services.mysql_connect_service import connect_to_database
-from app.routers.comment.get_comment_router import comment_get_route_list
 
 router = APIRouter()
 
@@ -16,7 +16,7 @@ class CommentBody(BaseModel):
     content: str = "Nice comment example on episode !"
 
 
-# This enable two routes to be refactored ("/comment/episode" and "/comment/character")
+# Data to map resource type with matching MYSQL tables
 COMMENT_TAG_MAPPING = {
     "episode": {
         "linked_tag_table_name": get_settings().table.names.episode_comment,
@@ -38,7 +38,7 @@ def comment_post_route_logic(
     episode_id: int,
 ) -> dict[str, str]:
     """
-    Execute the insert query from query_post_comment_tpl and return the comment that was created
+    Execute the insert query from query_post_comment_tpl and return a message
     :param query_post_comment_tpl:
     :param body:
     :param connection:
@@ -56,13 +56,11 @@ def comment_post_route_logic(
         comment_linked_tag_col_name=COMMENT_TAG_MAPPING[tag]["linked_tag_col_name"],
         comment_linked_tag_value=episode_id,
     )
-    query = Query(connection, insert_query)
+    query = DbQuery(connection, insert_query)
     query.commit_query()
-    # TODO : change to comment_get_route when implemented
     response = {
         "info": f"Comment has been successfully added to resource {tag} with id {episode_id}"
     }
-    response.update(comment_get_route_list(connect_to_database()))
     return response
 
 
@@ -77,37 +75,69 @@ INSERT INTO `$comment_linked_tag_table_name` ($comment_id_col_name, $comment_lin
 VALUES (@last_id_in_comment, $comment_linked_tag_value);
     """
 )
-route_path_list = [
+
+
+@router.post(
     "/comment/episode/{episode_id}",
-    "/comment/character/{character_id}",
-]
-
-for route_path in route_path_list:
-    route_tag = route_path.split("/")[2]
-
-    @router.post(
-        route_path,
-        tags=["comment"],
-        description=f"route to post comment data about Rick and Morty.",
+    tags=["comment"],
+    description=f"route to post comment data about Rick and Morty episodes.",
+)
+def comment_route(
+    body: CommentBody,
+    target_id: int,
+    connection: MySQLConnection = Depends(connect_to_database),
+    settings: Settings = Depends(get_settings),
+) -> dict:
+    """
+    :param body:
+    :param target_id:
+    :param connection:
+    :param settings:
+    :return:
+    """
+    tag = "episode"
+    response = comment_post_route_logic(
+        QUERY_POST_COMMENT_TPL,
+        body,
+        connection,
+        settings,
+        tag,
+        target_id,
     )
-    def comment_route(
-        body: CommentBody,
-        comment_target_id: int,
-        connection: MySQLConnection = Depends(connect_to_database),
-        settings: Settings = Depends(get_settings),
-    ) -> dict:
-        response = comment_post_route_logic(
-            QUERY_POST_COMMENT_TPL,
-            body,
-            connection,
-            settings,
-            route_tag,
-            comment_target_id,
-        )
-        return response
+    return response
 
 
-# *********************** POST /comment/?episode=1&character=1   *********************** #
+@router.post(
+    "/comment/character/{character_id}",
+    tags=["comment"],
+    description=f"route to post comment data about Rick and Morty characters.",
+)
+def comment_route(
+    body: CommentBody,
+    target_id: int,
+    connection: MySQLConnection = Depends(connect_to_database),
+    settings: Settings = Depends(get_settings),
+) -> dict:
+    """
+    :param body:
+    :param target_id:
+    :param connection:
+    :param settings:
+    :return:
+    """
+    tag = "character"
+    response = comment_post_route_logic(
+        QUERY_POST_COMMENT_TPL,
+        body,
+        connection,
+        settings,
+        tag,
+        target_id,
+    )
+    return response
+
+
+# *********************** POST /comment/?episode=39&character=2   *********************** #
 QUERY_POST_COMMENT_CHAR_IN_EPISODE_TPL = Template(
     """
 INSERT INTO `$comment_table_name` ($comment_content_col_name) VALUES ('$comment_content');
@@ -124,17 +154,25 @@ VALUES ('$ep_char_app_episode_id', '$ep_char_app_character_id', @last_id_in_comm
 
 
 @router.post(
-    "/comment",
+    "/comment/character-in-episode",
     tags=["comment"],
-    description=f"route to post comment data about Rick and Morty.",
+    description=f"route to post comment data about Rick and Morty character in episode.",
 )
 def comment_route_with_parameters(
     body: CommentBody,
-    episode_id: int = None,
-    character_id: int = None,
+    episode_id: int,
+    character_id: int,
     connection: MySQLConnection = Depends(connect_to_database),
     settings: Settings = Depends(get_settings),
-) -> dict:
+) -> Dict[str, str]:
+    """
+    :param body:
+    :param episode_id:
+    :param character_id:
+    :param connection:
+    :param settings:
+    :return:
+    """
     get_query = QUERY_POST_COMMENT_CHAR_IN_EPISODE_TPL.substitute(
         comment_table_name=settings.table.names.comment,
         comment_content_col_name=settings.table.comment_col_names.comment_content,
@@ -146,11 +184,9 @@ def comment_route_with_parameters(
         ep_char_app_episode_id=episode_id,
         ep_char_app_character_id=character_id,
     )
-
-    Query(connection, get_query).commit_query()
-    response = {
-        "info": f"Comment has been successfully "
+    DbQuery(connection, get_query).commit_query()
+    response = (
+        f"Comment has been successfully "
         f"added to character id {character_id} and episode id {episode_id}"
-    }
-    response.update(comment_get_route_list(connect_to_database()))
-    return response
+    )
+    return {"info": response}

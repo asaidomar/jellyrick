@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi_pagination import add_pagination
 
 from .helpers.errors.override_default import override_default
 from .routers import episode_router, character_router
@@ -28,3 +29,4 @@ def include_routers():
 
 
 include_routers()
+add_pagination(app)

@@ -116,3 +116,6 @@ pytest --cov=api/app api/tests/
     - [x]  DB structure for comment table
     - [x]  Populate data for new table
     - [x]  Write CRUD routes for comments
+- [x]  Feature 
+    - [x]  Pagination system
+    - [x]  Add filters
