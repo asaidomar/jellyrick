@@ -9,7 +9,7 @@
 # Insert data to the "db" container from files in last argument folder
 # /db/script/insert_from_json_to_db.py "universe" "root" "root" "db" "/db/data_source"
 
-uvicorn app.main:app --reload --host 0.0.0.0 --port "${PORT}"
+uvicorn app.main:app --reload --host 0.0.0.0 --port "${API_EXPOSED_PORT}"
 
 # We never end the container
 tail -f /dev/null

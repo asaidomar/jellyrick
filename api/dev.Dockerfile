@@ -13,10 +13,12 @@ COPY ./api/entrypoint/dev.entrypoint.sh /dev.entrypoint.sh
 COPY ./api/entrypoint/wait-for-it.sh /wait-for-it.sh
 RUN chmod +x /dev.entrypoint.sh /wait-for-it.sh
 
-# Initialize the db
 RUN mkdir /db
 COPY ./db/data_source/ /db/data_source
 COPY ./db/script/ /db/script
 RUN chmod +x /db/script/insert_from_json_to_db.py /db/script/write_from_web_to_json.py
 
-RUN pip install --no-cache-dir -r /app/requirements.txt && apk add bash
+
+RUN apk --no-cache add musl-dev libffi-dev gcc bash \
+    && pip install --no-cache-dir -r /app/requirements.txt \
+    && apk del musl-dev libffi-dev gcc
