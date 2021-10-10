@@ -1,0 +1,1386 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "JellyRick 🚀",
+    "description": "API to post comments about Rick & Morty universe.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login For Access Token",
+        "operationId": "login_for_access_token_api_v1_login_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_login_for_access_token_api_v1_login_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/logout": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Protected Route",
+        "operationId": "protected_route_api_v1_logout_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "me"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/user": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "User List Route",
+        "description": "route to get user data",
+        "operationId": "user_list_route_api_v1_user_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Page",
+              "minimum": 1,
+              "type": "integer",
+              "default": 1
+            },
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Size",
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "size",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_str_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "User Route With Parameters",
+        "description": "route to post user data.",
+        "operationId": "user_route_with_parameters_api_v1_user_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserPost"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/limit-offset": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "User List Route",
+        "description": "route to get user data",
+        "operationId": "user_list_route_api_v1_user_limit_offset_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_str_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{username}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "User Unique Route",
+        "description": "route to get user data",
+        "operationId": "user_unique_route_api_v1_user__username__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Username",
+              "type": "string"
+            },
+            "name": "username",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "User Delete Route",
+        "description": "route to delete user data",
+        "operationId": "user_delete_route_api_v1_user__username__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Username",
+              "type": "string"
+            },
+            "name": "username",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comment/{id}": {
+      "put": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment Put Route",
+        "description": "route to update comment data",
+        "operationId": "comment_put_route_api_v1_comment__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Comment Id",
+              "type": "integer"
+            },
+            "name": "comment_id",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app__routers__comment__update_comment_router__CommentBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment Delete Route",
+        "description": "route to delete comment data",
+        "operationId": "comment_delete_route_api_v1_comment__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Comment Id",
+              "type": "integer"
+            },
+            "name": "comment_id",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/episode": {
+      "get": {
+        "tags": [
+          "episode"
+        ],
+        "summary": "Episode List Route",
+        "description": "route to get episode data from rock and morty universe",
+        "operationId": "episode_list_route_api_v1_episode_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Page",
+              "minimum": 1,
+              "type": "integer",
+              "default": 1
+            },
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Size",
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "size",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_str_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "me"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/episode/limit-offset": {
+      "get": {
+        "tags": [
+          "episode"
+        ],
+        "summary": "Episode List Route",
+        "description": "route to get episode data from rock and morty universe",
+        "operationId": "episode_list_route_api_v1_episode_limit_offset_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_str_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "me"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/episode/{episode_id}": {
+      "get": {
+        "tags": [
+          "episode"
+        ],
+        "summary": "Episode Unique Route",
+        "description": "route to get episode data from rock and morty universe",
+        "operationId": "episode_unique_route_api_v1_episode__episode_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Episode Id",
+              "type": "integer"
+            },
+            "name": "episode_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/character": {
+      "get": {
+        "tags": [
+          "character"
+        ],
+        "summary": "Character List Route",
+        "description": "route to get character data from rock and morty universe",
+        "operationId": "character_list_route_api_v1_character_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Page",
+              "minimum": 1,
+              "type": "integer",
+              "default": 1
+            },
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Size",
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "size",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_str_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/character/limit-offset": {
+      "get": {
+        "tags": [
+          "character"
+        ],
+        "summary": "Character List Route",
+        "description": "route to get character data from rock and morty universe",
+        "operationId": "character_list_route_api_v1_character_limit_offset_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_str_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/character/{character_id}": {
+      "get": {
+        "tags": [
+          "character"
+        ],
+        "summary": "Character Unique Route",
+        "description": "route to get character data from rock and morty universe",
+        "operationId": "character_unique_route_api_v1_character__character_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Character Id",
+              "type": "integer"
+            },
+            "name": "character_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comment": {
+      "get": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment List Route",
+        "description": "route to get comment data from rock and morty universe",
+        "operationId": "comment_list_route_api_v1_comment_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Page",
+              "minimum": 1,
+              "type": "integer",
+              "default": 1
+            },
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Size",
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "size",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_str_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comment/limit-offset": {
+      "get": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment List Route",
+        "description": "route to get comment data from rock and morty universe",
+        "operationId": "comment_list_route_api_v1_comment_limit_offset_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_str_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comment/{comment_id}": {
+      "get": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment Unique Route",
+        "description": "route to get comment data from rock and morty universe",
+        "operationId": "comment_unique_route_api_v1_comment__comment_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Comment Id",
+              "type": "integer"
+            },
+            "name": "comment_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comment/episode/{episode_id}": {
+      "post": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment Route",
+        "description": "route to post comment data about Rick and Morty episodes.",
+        "operationId": "comment_route_api_v1_comment_episode__episode_id__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Target Id",
+              "type": "integer"
+            },
+            "name": "target_id",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app__routers__comment__post_comment_router__CommentBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comment/character/{character_id}": {
+      "post": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment Route",
+        "description": "route to post comment data about Rick and Morty characters.",
+        "operationId": "comment_route_api_v1_comment_character__character_id__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Target Id",
+              "type": "integer"
+            },
+            "name": "target_id",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app__routers__comment__post_comment_router__CommentBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comment/character-in-episode": {
+      "post": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment Route With Parameters",
+        "description": "route to post comment data about Rick and Morty character in episode.",
+        "operationId": "comment_route_with_parameters_api_v1_comment_character_in_episode_post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Episode Id",
+              "type": "integer"
+            },
+            "name": "episode_id",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Character Id",
+              "type": "integer"
+            },
+            "name": "character_id",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app__routers__comment__post_comment_router__CommentBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/me/": {
+      "get": {
+        "summary": "Read Users Me",
+        "operationId": "read_users_me_users_me__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "me"
+            ]
+          }
+        ]
+      }
+    },
+    "/users/me/items/": {
+      "get": {
+        "summary": "Read Own Items",
+        "operationId": "read_own_items_users_me_items__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "items",
+              "me"
+            ]
+          }
+        ]
+      }
+    },
+    "/status/": {
+      "get": {
+        "summary": "Read System Status",
+        "operationId": "read_system_status_status__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_login_for_access_token_api_v1_login_post": {
+        "title": "Body_login_for_access_token_api_v1_login_post",
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "title": "Grant Type",
+            "pattern": "password",
+            "type": "string"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "string",
+            "default": ""
+          },
+          "client_id": {
+            "title": "Client Id",
+            "type": "string"
+          },
+          "client_secret": {
+            "title": "Client Secret",
+            "type": "string"
+          }
+        }
+      },
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "LimitOffsetPage_str_": {
+        "title": "LimitOffsetPage[str]",
+        "required": [
+          "items",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0,
+            "type": "integer"
+          }
+        }
+      },
+      "Page_str_": {
+        "title": "Page[str]",
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "page": {
+            "title": "Page",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "size": {
+            "title": "Size",
+            "minimum": 1,
+            "type": "integer"
+          }
+        }
+      },
+      "Token": {
+        "title": "Token",
+        "required": [
+          "access_token",
+          "token_type"
+        ],
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "title": "Access Token",
+            "type": "string"
+          },
+          "token_type": {
+            "title": "Token Type",
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "title": "User",
+        "required": [
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "full_name": {
+            "title": "Full Name",
+            "type": "string"
+          },
+          "disabled": {
+            "title": "Disabled",
+            "type": "boolean"
+          },
+          "administrator": {
+            "title": "Administrator",
+            "type": "boolean"
+          },
+          "reviewer": {
+            "title": "Reviewer",
+            "type": "boolean"
+          },
+          "moderator": {
+            "title": "Moderator",
+            "type": "boolean"
+          }
+        },
+        "example": {
+          "username": "johndoe",
+          "full_name": "John Doe",
+          "email": "johndoe@example.com",
+          "disabled": false,
+          "administrator": false,
+          "reviewer": false,
+          "moderator": false
+        }
+      },
+      "UserPost": {
+        "title": "UserPost",
+        "type": "object",
+        "properties": {},
+        "example": {
+          "content": {
+            "username": "johndoe",
+            "full_name": "John Doe",
+            "email": "johndoe@example.com",
+            "disabled": false,
+            "administrator": false,
+            "reviewer": false,
+            "moderator": false
+          }
+        }
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        }
+      },
+      "app__routers__comment__post_comment_router__CommentBody": {
+        "title": "CommentBody",
+        "type": "object",
+        "properties": {
+          "content": {
+            "title": "Content",
+            "type": "string",
+            "default": "Nice comment example on episode !"
+          }
+        }
+      },
+      "app__routers__comment__update_comment_router__CommentBody": {
+        "title": "CommentBody",
+        "type": "object",
+        "properties": {
+          "content": {
+            "title": "Content",
+            "type": "string",
+            "default": "Nice comment update example !"
+          }
+        }
+      },
+      "app__routers__user__update_user_router__CommentBody": {
+        "title": "CommentBody",
+        "type": "object",
+        "properties": {
+          "content": {
+            "title": "Content",
+            "type": "string",
+            "default": "Nice comment update example !"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": {
+              "me": "Read information about the current user.",
+              "items": "Read items."
+            },
+            "tokenUrl": "/api/v1/login"
+          }
+        }
+      }
+    }
+  }
+}

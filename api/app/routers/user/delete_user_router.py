@@ -11,38 +11,37 @@ from ...models.user import User
 
 router = APIRouter()
 
-# *********************** DELETE /comment/{id} *********************** #
-QUERY_DELETE_COMMENT = Template(
+# *********************** DELETE /user/{id} *********************** #
+QUERY_DELETE_USER = Template(
     """
-DELETE FROM `$comment_table_name`
-WHERE `$comment_id_col_name` = $comment_id;
+DELETE FROM `$user_table_name`
+WHERE `$user_col_name` = '$username';
     """
 )
 
 
 @router.delete(
-    "/comment/{id}",
-    tags=["comment"],
-    description="route to delete comment data",
+    "/user/{username}",
+    tags=["user"],
+    description="route to delete user data",
 )
-def comment_delete_route(
-    comment_id: int,
+def user_delete_route(
+    username: str,
     connection: MySQLConnection = Depends(connect_to_database),
     settings: Settings = Depends(get_settings),
     _: User = Depends(get_current_active_user),
 ) -> dict:
     """
-    :param comment_id: comment_id to delete
+    :param username: username to delete
     :param connection: db connection instance
     :param settings: settings from config.py file
     :param _: current user => enable auth for the route
-    :return: json with comment data
+    :return: json with user data
     """
-    query_str = QUERY_DELETE_COMMENT.substitute(
-        comment_table_name=settings.table.names.comment,
-        comment_id_col_name=settings.table.comment_col_names.comment_id,
-        comment_id=comment_id,
+    query_str = QUERY_DELETE_USER.substitute(
+        user_table_name=settings.table.names.user,
+        user_col_name=settings.table.user_col_names.username,
+        username=username,
     )
     DbQuery(connection, query_str).commit_query()
-
-    return {"result": f"success: comment id {comment_id} has been deleted"}
+    return {"result": f"success: user id {username} has been deleted"}
