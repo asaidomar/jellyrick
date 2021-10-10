@@ -38,6 +38,8 @@ Change the python source code and see the front reload live, enjoy !
 
 ## Database usage 📚
 
+![db_diagram](./docs/db_diagram.png)
+
 Follow the "dev quick start" step above first !
 
 - Get data from api with a python script ([script](./db/script/write_from_web_to_json.py)) :
