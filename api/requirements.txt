@@ -8,3 +8,5 @@ fastapi-pagination
 passlib[bcrypt]
 python-jose[cryptography]
 python-multipart
+pyexcel
+pyexcel-xls
