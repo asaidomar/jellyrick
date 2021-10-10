@@ -25,6 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - api route to get episode and character data
 - Base files for project (README, CHANGELOG, gitignore)
 
-[0.0.2]: https://github.com/benjmathias/jellyrick/compare/v0.0.1...v0.0.3
+[0.0.3]: https://github.com/benjmathias/jellyrick/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/benjmathias/jellyrick/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/benjmathias/jellyrick/releases/tag/v0.0.1
