@@ -4,7 +4,7 @@ from fastapi import Depends, APIRouter
 from mysql.connector import MySQLConnection
 
 from app.config import Settings, get_settings
-from app.helpers.db.queries import Query
+from app.helpers.db.queries import DbQuery
 from app.helpers.services.mysql_connect_service import connect_to_database
 
 router = APIRouter()
@@ -39,6 +39,6 @@ def comment_delete_route(
         comment_id_col_name=settings.table.comment_col_names.comment_id,
         comment_id=comment_id,
     )
-    Query(connection, query_str).commit_query()
+    DbQuery(connection, query_str).commit_query()
 
     return {"result": f"success: comment id {comment_id} has been deleted"}

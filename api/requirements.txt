@@ -4,3 +4,4 @@ uvicorn
 requests
 mysql-connector-python
 requests
+fastapi-pagination
