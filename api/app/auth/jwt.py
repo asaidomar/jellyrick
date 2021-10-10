@@ -12,6 +12,7 @@ from starlette import status
 from ..config import get_settings
 from ..helpers.db.queries import AutonomousQuery
 from ..models.token import TokenData
+from ..models.user import UserInDB
 
 settings = get_settings()
 SECRET_KEY = settings.secret_key_db_hash
@@ -30,14 +31,28 @@ oauth2_scheme = OAuth2PasswordBearer(
 
 
 def verify_password(plain_password, hashed_password):
+    """
+    :param plain_password:
+    :param hashed_password:
+    :return:
+    """
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def get_password_hash(password):
+def get_password_hash(password) -> str:
+    """
+    :param password:
+    :return:
+    """
     return pwd_context.hash(password)
 
 
 def authenticate_user(username: str, password: str):
+    """
+    :param username:
+    :param password:
+    :return:
+    """
     user = AutonomousQuery.get_db_user(username)
     if not user:
         return False
@@ -46,7 +61,12 @@ def authenticate_user(username: str, password: str):
     return user
 
 
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
+    """
+    :param data:
+    :param expires_delta:
+    :return:
+    """
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
@@ -59,7 +79,12 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 async def get_current_auth_data(
     security_scopes: SecurityScopes, token: str = Depends(oauth2_scheme)
-):
+) -> dict:
+    """
+    :param security_scopes:
+    :param token:
+    :return:
+    """
     if security_scopes.scopes:
         authenticate_value = f'Bearer scope="{security_scopes.scope_str}"'
     else:
@@ -93,20 +118,25 @@ async def get_current_auth_data(
     if user is None:
         raise credentials_exception
 
-    for scope in security_scopes.scopes:
-        if scope not in token_data.scopes:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Not enough permissions",
-                headers={"WWW-Authenticate": authenticate_value},
-            )
+    if not [i for i in token_data.scopes if i in security_scopes.scopes]:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not enough permissions",
+            headers={"WWW-Authenticate": authenticate_value},
+        )
 
     return {"user": user, "token": token}
 
 
 async def get_current_active_user(
-    current_auth_data: dict = Security(get_current_auth_data, scopes=["user"])
-):
+    current_auth_data: dict = Security(
+        get_current_auth_data, scopes=["user", "moderator", "admin"]
+    )
+) -> UserInDB:
+    """
+    :param current_auth_data:
+    :return:
+    """
     user = current_auth_data["user"]
     if user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
@@ -115,6 +145,12 @@ async def get_current_active_user(
 
 
 async def get_current_active_token(
-    current_auth_data: dict = Security(get_current_auth_data, scopes=["user"])
-):
+    current_auth_data: dict = Security(
+        get_current_auth_data, scopes=["user", "moderator", "admin"]
+    )
+) -> str:
+    """
+    :param current_auth_data:
+    :return:
+    """
     return current_auth_data["token"]
