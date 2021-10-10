@@ -97,5 +97,18 @@ CREATE TABLE IF NOT EXISTS `episode_character_appearance_comment`
     CONSTRAINT `FK_constr_ep_char_ep_com` FOREIGN KEY `FK_ep_char_ep_com` (`character`, `episode`) REFERENCES `episode_character_appearance` (`character`, `episode`)
 );
 
+-- ************************************** `user`
 
+CREATE TABLE IF NOT EXISTS `user`
+(
+ `username`        varchar(45) NOT NULL ,
+ `full_name`       varchar(45) NOT NULL ,
+ `email`           varchar(45) NOT NULL ,
+ `hashed_password` varchar(70) NOT NULL ,
+ `disabled`        tinyint NOT NULL ,
+ `administrator`   tinyint NOT NULL ,
+ `reviewer`        tinyint NOT NULL ,
+ `moderator`       tinyint NOT NULL ,
 
+PRIMARY KEY (`username`)
+);

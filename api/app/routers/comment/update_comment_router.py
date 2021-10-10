@@ -2,18 +2,15 @@ from string import Template
 
 from fastapi import Depends, APIRouter
 from mysql.connector import MySQLConnection
-from pydantic import BaseModel
 
-from app.config import Settings, get_settings
-from app.helpers.db.queries import DbQuery
-from app.helpers.services.mysql_connect_service import connect_to_database
+from ...auth.jwt import get_current_active_user
+from ...config import Settings, get_settings
+from ...helpers.db.queries import DbQuery
+from ...helpers.services.mysql_connect_service import connect_to_database
+from ...models.comment import Comment
+from ...models.user import User
 
 router = APIRouter()
-
-
-class CommentBody(BaseModel):
-    content: str = "Nice comment update example !"
-
 
 # *********************** PUT /comment/{id} *********************** #
 QUERY_PUT_COMMENT = Template(
@@ -32,15 +29,17 @@ WHERE `$comment_id_col_name` = '$comment_id';
 )
 def comment_put_route(
     comment_id: int,
-    body: CommentBody,
+    body: Comment,
     connection: MySQLConnection = Depends(connect_to_database),
     settings: Settings = Depends(get_settings),
+    _: User = Depends(get_current_active_user),
 ) -> dict:
     """
     :param body: body with comment content that will be used to update a comment
     :param comment_id: comment_id to put
     :param connection: db connection instance
     :param settings: settings from config.py file
+    :param _: current user => enable auth for the route
     :return: json with comment data
     """
     query_str = QUERY_PUT_COMMENT.substitute(

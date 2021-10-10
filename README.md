@@ -30,6 +30,9 @@ Access the interactive openapi docs with :
 
 - http://localhost/docs
 
+See the json openapi schema here :
+- [openapi.json](./docs/openapi.json)
+
 **Live reload functionality**.  
 Change the python source code and see the front reload live, enjoy !
 
@@ -54,7 +57,7 @@ pip3 install mysql-connector-python
 # cd to this project root
 cd db/script
 chmod +x insert_from_json_to_db.py
-./insert_from_json_to_db.py "universe" "root" "root" "db" "../data_source"
+./insert_from_json_to_db.py "universe" "root" "root" "127.0.0.1" "../data_source"
 ```
 
 You can check with adminer front that the data has been inserted, connect with "universe" database and "root" "root"
@@ -116,6 +119,11 @@ pytest --cov=api/app api/tests/
     - [x]  DB structure for comment table
     - [x]  Populate data for new table
     - [x]  Write CRUD routes for comments
-- [x]  Feature 
+- [x]  Feature 3
     - [x]  Pagination system
     - [x]  Add filters
+- [x]  Feature 4
+    - [x]  Implement JWT and OAuth2 in fastapi with users variable as faked db
+    - [x]  Create dev.env.tpl and use it with docker-compose
+    - [x]  Add USER table in MYSQL
+    - [x]  Link JWT with DB

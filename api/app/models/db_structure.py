@@ -45,11 +45,24 @@ class EpisodeCharacterAppearanceCommentCol:
 
 
 @dataclass
+class UserCol:
+    username: str = "username"
+    full_name: str = "full_name"
+    email: str = "email"
+    hashed_password: str = "hashed_password"
+    disabled: str = "disabled"
+    administrator: str = "administrator"
+    reviewer: str = "reviewer"
+    moderator: str = "moderator"
+
+
+@dataclass
 class TableNames:
     comment: str = "comment"
     episode: str = "episode"
     character: str = "character"
     episode_character_appearance: str = "episode_character_appearance"
+    user: str = "user"
 
     # Comment
     episode_comment: str = "episode_comment"
@@ -61,17 +74,18 @@ class TableNames:
 class Table:
     names = TableNames
 
+    # User
+    user_col_names = UserCol
+
     # Episode and character
-    episode_col_names: type(EpisodeCol) = EpisodeCol
-    character_col_names: type(CharacterCol) = CharacterCol
-    episode_character_appearance_col_names: type(
-        EpisodeCharacterAppearanceCol
-    ) = EpisodeCharacterAppearanceCol
+    episode_col_names = EpisodeCol
+    character_col_names = CharacterCol
+    episode_character_appearance_col_names = EpisodeCharacterAppearanceCol
 
     # Comment
-    comment_col_names: type(EpisodeCol) = CommentCol
-    episode_comment_col_names: type(EpisodeCommentCol) = EpisodeCommentCol
-    character_comment_col_names: type(CharacterCommentCol) = CharacterCommentCol
-    episode_character_appearance_comment_col_names: type(
+    comment_col_names = CommentCol
+    episode_comment_col_names = EpisodeCommentCol
+    character_comment_col_names = CharacterCommentCol
+    episode_character_appearance_comment_col_names = (
         EpisodeCharacterAppearanceCommentCol
-    ) = EpisodeCharacterAppearanceCommentCol
+    )

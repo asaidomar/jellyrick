@@ -1,20 +1,17 @@
 from string import Template
 from typing import Dict
 
-from fastapi import Depends, APIRouter, Query
+from fastapi import Depends, APIRouter
 from mysql.connector import MySQLConnection
-from pydantic import BaseModel
 
-from app.config import get_settings, Settings
-from app.helpers.db.queries import DbQuery
-from app.helpers.services.mysql_connect_service import connect_to_database
+from ...auth.jwt import get_current_active_user
+from ...config import get_settings, Settings
+from ...helpers.db.queries import DbQuery
+from ...helpers.services.mysql_connect_service import connect_to_database
+from ...models.comment import Comment
+from ...models.user import User
 
 router = APIRouter()
-
-
-class CommentBody(BaseModel):
-    content: str = "Nice comment example on episode !"
-
 
 # Data to map resource type with matching MYSQL tables
 COMMENT_TAG_MAPPING = {
@@ -31,11 +28,12 @@ COMMENT_TAG_MAPPING = {
 
 def comment_post_route_logic(
     query_post_comment_tpl: Template,
-    body: CommentBody,
+    body: Comment,
     connection: MySQLConnection,
     settings: Settings,
     tag: str,
     episode_id: int,
+    _: User = Depends(get_current_active_user),
 ) -> dict[str, str]:
     """
     Execute the insert query from query_post_comment_tpl and return a message
@@ -45,6 +43,7 @@ def comment_post_route_logic(
     :param settings:
     :param tag:
     :param episode_id:
+    :param _: current user => enable auth for the route
     :return:
     """
     insert_query = query_post_comment_tpl.substitute(
@@ -83,16 +82,18 @@ VALUES (@last_id_in_comment, $comment_linked_tag_value);
     description=f"route to post comment data about Rick and Morty episodes.",
 )
 def comment_route(
-    body: CommentBody,
+    body: Comment,
     target_id: int,
     connection: MySQLConnection = Depends(connect_to_database),
     settings: Settings = Depends(get_settings),
+    _: User = Depends(get_current_active_user),
 ) -> dict:
     """
     :param body:
     :param target_id:
     :param connection:
     :param settings:
+    :param _: current user => enable auth for the route
     :return:
     """
     tag = "episode"
@@ -113,16 +114,18 @@ def comment_route(
     description=f"route to post comment data about Rick and Morty characters.",
 )
 def comment_route(
-    body: CommentBody,
+    body: Comment,
     target_id: int,
     connection: MySQLConnection = Depends(connect_to_database),
     settings: Settings = Depends(get_settings),
+    _: User = Depends(get_current_active_user),
 ) -> dict:
     """
     :param body:
     :param target_id:
     :param connection:
     :param settings:
+    :param _: current user => enable auth for the route
     :return:
     """
     tag = "character"
@@ -159,11 +162,12 @@ VALUES ('$ep_char_app_episode_id', '$ep_char_app_character_id', @last_id_in_comm
     description=f"route to post comment data about Rick and Morty character in episode.",
 )
 def comment_route_with_parameters(
-    body: CommentBody,
+    body: Comment,
     episode_id: int,
     character_id: int,
     connection: MySQLConnection = Depends(connect_to_database),
     settings: Settings = Depends(get_settings),
+    _: User = Depends(get_current_active_user),
 ) -> Dict[str, str]:
     """
     :param body:
@@ -171,6 +175,7 @@ def comment_route_with_parameters(
     :param character_id:
     :param connection:
     :param settings:
+    :param _: current user => enable auth for the route
     :return:
     """
     get_query = QUERY_POST_COMMENT_CHAR_IN_EPISODE_TPL.substitute(

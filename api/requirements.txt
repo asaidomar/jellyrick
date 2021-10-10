@@ -5,3 +5,6 @@ requests
 mysql-connector-python
 requests
 fastapi-pagination
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart

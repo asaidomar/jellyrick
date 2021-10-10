@@ -5,9 +5,11 @@ from fastapi import APIRouter, Depends
 from fastapi_pagination import LimitOffsetPage, Page, paginate
 from mysql.connector import MySQLConnection
 
+from ..auth.jwt import get_current_active_user
 from ..config import get_settings, Settings
 from ..helpers.db.queries import DbQuery
 from ..helpers.services.mysql_connect_service import connect_to_database
+from ..models.user import User
 
 router = APIRouter()
 

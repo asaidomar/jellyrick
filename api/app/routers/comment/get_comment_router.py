@@ -5,9 +5,11 @@ from fastapi import Depends, APIRouter
 from fastapi_pagination import LimitOffsetPage, Page, paginate
 from mysql.connector import MySQLConnection
 
-from app.config import Settings, get_settings
-from app.helpers.db.queries import DbQuery
-from app.helpers.services.mysql_connect_service import connect_to_database
+from ...auth.jwt import get_current_active_user
+from ...config import Settings, get_settings
+from ...helpers.db.queries import DbQuery
+from ...helpers.services.mysql_connect_service import connect_to_database
+from ...models.user import User
 
 router = APIRouter()
 
@@ -33,10 +35,12 @@ dec_dict = dict(
 def comment_list_route(
     connection: MySQLConnection = Depends(connect_to_database),
     settings: Settings = Depends(get_settings),
+    _: User = Depends(get_current_active_user),
 ):
     """
     :param connection: db connection instance
     :param settings:
+    :param _: current user => enable auth for the route
     :return: json with comment data
     """
     query_str = QUERY_SELECT_COMMENT.substitute(
@@ -54,11 +58,13 @@ def comment_unique_route(
     comment_id: Optional[int],
     connection: MySQLConnection = Depends(connect_to_database),
     settings: Settings = Depends(get_settings),
+    _: User = Depends(get_current_active_user),
 ) -> str:
     """
     :param comment_id:
     :param connection: db connection instance
     :param settings:
+    :param _: current user => enable auth for the route
     :return: json with comment data
     """
     query_str = QUERY_SELECT_COMMENT.substitute(
