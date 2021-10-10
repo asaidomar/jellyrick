@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi_pagination import add_pagination
 
 from .helpers.errors.override_default import override_default_error_handling
-from .routers import auth_router, episode_router, character_router
+from .routers import auth_router, episode_router, character_router, report_router
 from .routers.comment import (
     get_comment_router,
     post_comment_router,
@@ -35,6 +35,7 @@ def include_routers():
         update_user_router,
         episode_router,
         character_router,
+        report_router,
     ]
 
     for router in routers:

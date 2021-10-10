@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Implement JWT and OAuth2
 
+## [0.0.5] 2021-10-11
+
+### Added
+- Routes to get csv or xls report about comment
+
 ## [0.0.4] 2021-10-10
 
 ### Added
@@ -32,6 +37,7 @@ Implement JWT and OAuth2
 - api route to get episode and character data
 - Base files for project (README, CHANGELOG, gitignore)
 
+[0.0.5]: https://github.com/benjmathias/jellyrick/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/benjmathias/jellyrick/compare/v0.0.3...v0.0.4
 [0.0.3]: https://github.com/benjmathias/jellyrick/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/benjmathias/jellyrick/compare/v0.0.1...v0.0.2
