@@ -143,3 +143,8 @@ pytest --cov=api/app api/tests/
     - [x]  Create dev.env.tpl and use it with docker-compose
     - [x]  Add USER table in MYSQL
     - [x]  Link JWT with DB
+- [x]  Feature 5
+    - [x]  Add report route for CSV file download
+    - [x]  Add report route for XLS file download
+- [x]  Backlog
+    - [x]  Add report route for CSV file download

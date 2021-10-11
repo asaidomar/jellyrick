@@ -10,6 +10,7 @@ import json
 import sys
 
 import mysql.connector
+from mypy.stubgen import BLACKLIST
 from mysql.connector import Error, MySQLConnection
 
 
@@ -88,7 +89,8 @@ if __name__ == "__main__":
         MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOSTNAME
     )
 
-    sources_json_data_path = glob.glob(f"{JSON_SOURCE_FILE_PATH}/*.json")
+    sources_json_data_path = glob.glob(f"{JSON_SOURCE_FILE_PATH}/*character.json")
+    sources_json_data_path.extend(glob.glob(f"{JSON_SOURCE_FILE_PATH}/*episode.json"))
     sources_json = []
     for source_json_path in sources_json_data_path:
         with open(source_json_path) as json_file:

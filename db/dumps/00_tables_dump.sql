@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS `episode`
 (
     `episode_id`   int unsigned NOT NULL AUTO_INCREMENT,
     `episode_name` varchar(50)  NOT NULL,
+    `plot` varchar(350) NULL,
+    `image` varchar(170) NULL,
 
     PRIMARY KEY (`episode_id`),
     UNIQUE KEY `name` (`episode_name`)
@@ -110,5 +112,6 @@ CREATE TABLE IF NOT EXISTS `user`
  `reviewer`        tinyint NOT NULL ,
  `moderator`       tinyint NOT NULL ,
 
-PRIMARY KEY (`username`)
+PRIMARY KEY (`username`),
+UNIQUE KEY `mail` (`email`)
 );
