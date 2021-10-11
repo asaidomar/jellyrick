@@ -33,7 +33,7 @@ Implement JWT and OAuth2
 ## [0.0.1] 2021-10-08
 
 ### Added
-- Import python script from web to db ([script](./db/script/write_from_web_to_json.py))
+- Import python script from web to db ([script](db/script/ep_char_write_from_web_to_json.py))
 - api route to get episode and character data
 - Base files for project (README, CHANGELOG, gitignore)
 

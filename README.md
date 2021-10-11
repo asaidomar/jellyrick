@@ -42,24 +42,38 @@ Change the python source code and see the front reload live, enjoy !
 
 Follow the "dev quick start" step above first !
 
-- Get data from api with a python script ([script](./db/script/write_from_web_to_json.py)) :
+- Get **episode and character** data from api with a python script ([script](db/script/ep_char_write_from_web_to_json.py)) :
 
 ```bash
 pip3 install requests
 # cd to this project root
 cd db/script
-chmod +x write_from_web_to_json.py
-./write_from_web_to_json.py "../data_source"
+chmod +x ep_char_write_from_web_to_json.py
+# ./ep_char_write_from_web_to_json.py <OUTPUT_PATH>
+./ep_char_write_from_web_to_json.py "../data_source"
 ```
 
-- Script usage to insert data from json file to DB ([script](./db/script/insert_from_json_to_db.py)) :
+- Get **metadata** about Rick and Morty from api with a python script ([script](db/script/metadata_write_from_web_to_json.py)) :
+
+```bash
+pip3 install requests
+# cd to this project root
+cd db/script
+chmod +x metadata_write_from_web_to_json.py
+# Create an account to get api key from imdb here (not official imdb api) : https://imdb-api.com/api
+export API_KEY_IMDB=<YOUR_API_KEY>
+# /metadata_write_from_web_to_json.py <OUTPUT_PATH> <SEASON_TOTAL_NUMBER> <API_KEY_IMDB>
+./metadata_write_from_web_to_json.py "../data_source" 5 "${API_KEY_IMDB}"
+```
+
+- Script usage to insert data from json file to DB ([script](db/script/ep_char_insert_from_json_to_db.py)) :
 
 ```bash
 pip3 install mysql-connector-python
 # cd to this project root
 cd db/script
-chmod +x insert_from_json_to_db.py
-./insert_from_json_to_db.py "universe" "root" "root" "127.0.0.1" "../data_source"
+chmod +x ep_char_insert_from_json_to_db.py
+./ep_char_insert_from_json_to_db.py "universe" "root" "root" "127.0.0.1" "../data_source"
 ```
 
 You can check with adminer front that the data has been inserted, connect with "universe" database and "root" "root"
@@ -106,8 +120,8 @@ pytest --cov=api/app api/tests/
         - [x]  docker-compose
     - [x]  Init the db structure, dump it, put the dump in db container entrypoint
     - [x]  Retrieve characters and episodes data from the web (rickandmortyapi.com) and write it to
-      JSON : ([script](./db/script/write_from_web_to_json.py), [data_example](./db/data_source/rick_data_episode.json))
-    - [x]  Python import script ([script](./db/script/insert_from_json_to_db.py))
+      JSON : ([script](db/script/ep_char_write_from_web_to_json.py), [data_example](./db/data_source/rick_data_episode.json))
+    - [x]  Python import script ([script](db/script/ep_char_insert_from_json_to_db.py))
     - [x]  Fastapi base structure
     - [x]  api dev environment
         - [x]  Dockerfile

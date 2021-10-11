@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 """ USAGE:
-- chmod +x insert_from_json_to_db.py
-- ./insert_from_json_to_db.py <MYSQL_DATABASE> <MYSQL_USER> <MYSQL_PASSWORD> <MYSQL_HOSTNAME> <JSON_SOURCE_FILE_PATH>
+- chmod +x ep_char_insert_from_json_to_db.py
+- ./ep_char_insert_from_json_to_db.py <MYSQL_DATABASE> <MYSQL_USER> <MYSQL_PASSWORD> <MYSQL_HOSTNAME> <JSON_SOURCE_FILE_PATH>
 """
 
 import glob
