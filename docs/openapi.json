@@ -403,7 +403,7 @@
           "episode"
         ],
         "summary": "Episode List Route",
-        "description": "route to get episode data from rock and morty universe",
+        "description": "route to get episode data from rick and morty universe",
         "operationId": "episode_list_route_api_v1_episode_get",
         "parameters": [
           {
@@ -467,7 +467,7 @@
           "episode"
         ],
         "summary": "Episode List Route",
-        "description": "route to get episode data from rock and morty universe",
+        "description": "route to get episode data from rick and morty universe",
         "operationId": "episode_list_route_api_v1_episode_limit_offset_get",
         "parameters": [
           {
@@ -531,7 +531,7 @@
           "episode"
         ],
         "summary": "Episode Unique Route",
-        "description": "route to get episode data from rock and morty universe",
+        "description": "route to get episode data from rick and morty universe",
         "operationId": "episode_unique_route_api_v1_episode__episode_id__get",
         "parameters": [
           {
@@ -572,7 +572,7 @@
           "character"
         ],
         "summary": "Character List Route",
-        "description": "route to get character data from rock and morty universe",
+        "description": "route to get character data from rick and morty universe",
         "operationId": "character_list_route_api_v1_character_get",
         "parameters": [
           {
@@ -629,7 +629,7 @@
           "character"
         ],
         "summary": "Character List Route",
-        "description": "route to get character data from rock and morty universe",
+        "description": "route to get character data from rick and morty universe",
         "operationId": "character_list_route_api_v1_character_limit_offset_get",
         "parameters": [
           {
@@ -686,7 +686,7 @@
           "character"
         ],
         "summary": "Character Unique Route",
-        "description": "route to get character data from rock and morty universe",
+        "description": "route to get character data from rick and morty universe",
         "operationId": "character_unique_route_api_v1_character__character_id__get",
         "parameters": [
           {
@@ -727,7 +727,7 @@
           "comment"
         ],
         "summary": "Comment List Route",
-        "description": "route to get comment data from rock and morty universe",
+        "description": "route to get comment data from rick and morty universe",
         "operationId": "comment_list_route_api_v1_comment_get",
         "parameters": [
           {
@@ -784,7 +784,7 @@
           "comment"
         ],
         "summary": "Comment List Route",
-        "description": "route to get comment data from rock and morty universe",
+        "description": "route to get comment data from rick and morty universe",
         "operationId": "comment_list_route_api_v1_comment_limit_offset_get",
         "parameters": [
           {
@@ -841,7 +841,7 @@
           "comment"
         ],
         "summary": "Comment Unique Route",
-        "description": "route to get comment data from rock and morty universe",
+        "description": "route to get comment data from rick and morty universe",
         "operationId": "comment_unique_route_api_v1_comment__comment_id__get",
         "parameters": [
           {

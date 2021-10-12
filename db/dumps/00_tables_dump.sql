@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS `episode`
 (
     `episode_id`   int unsigned NOT NULL AUTO_INCREMENT,
     `episode_name` varchar(50)  NOT NULL,
-    `plot` varchar(350) NULL,
-    `image` varchar(170) NULL,
+    `plot`         varchar(350) NULL,
+    `image`        varchar(170) NULL,
 
     PRIMARY KEY (`episode_id`),
     UNIQUE KEY `name` (`episode_name`)
@@ -20,9 +20,15 @@ CREATE TABLE IF NOT EXISTS `episode`
 
 CREATE TABLE IF NOT EXISTS `comment`
 (
-    `comment_id`      int unsigned NOT NULL AUTO_INCREMENT,
-    `comment_content` varchar(200) NOT NULL,
+    `comment_id`            int unsigned NOT NULL AUTO_INCREMENT,
+    `comment_content`       varchar(200) NOT NULL,
+    `new`                   tinyint      NULL,
+    `in_review`             tinyint      NULL,
+    `rejected`              tinyint      NULL,
+    `approved`              tinyint      NULL,
+    `comment_of_comment_id` int unsigned NULL,
 
+    CONSTRAINT comment_on_comment_self_referenced FOREIGN KEY (comment_of_comment_id) REFERENCES comment (comment_id),
     PRIMARY KEY (`comment_id`)
 );
 
@@ -103,15 +109,15 @@ CREATE TABLE IF NOT EXISTS `episode_character_appearance_comment`
 
 CREATE TABLE IF NOT EXISTS `user`
 (
- `username`        varchar(45) NOT NULL ,
- `full_name`       varchar(45) NOT NULL ,
- `email`           varchar(45) NOT NULL ,
- `hashed_password` varchar(70) NOT NULL ,
- `disabled`        tinyint NOT NULL ,
- `administrator`   tinyint NOT NULL ,
- `reviewer`        tinyint NOT NULL ,
- `moderator`       tinyint NOT NULL ,
+    `username`        varchar(45) NOT NULL,
+    `full_name`       varchar(45) NOT NULL,
+    `email`           varchar(45) NOT NULL,
+    `hashed_password` varchar(70) NOT NULL,
+    `disabled`        tinyint     NOT NULL,
+    `administrator`   tinyint     NOT NULL,
+    `reviewer`        tinyint     NOT NULL,
+    `moderator`       tinyint     NOT NULL,
 
-PRIMARY KEY (`username`),
-UNIQUE KEY `mail` (`email`)
+    PRIMARY KEY (`username`),
+    UNIQUE KEY `mail` (`email`)
 );

@@ -1,6 +1,6 @@
 import os
 from datetime import timedelta, datetime
-from typing import Optional
+from typing import Optional, Union
 
 from fastapi import Depends, HTTPException, Security
 from fastapi.security import OAuth2PasswordBearer, SecurityScopes
@@ -25,7 +25,7 @@ oauth2_scheme = OAuth2PasswordBearer(
     scopes={
         "user": "User basic rights",
         "moderator": "Can update comment",
-        "admin": "All rights",
+        "administrator": "All rights",
     },
 )
 
@@ -47,7 +47,7 @@ def get_password_hash(password) -> str:
     return pwd_context.hash(password)
 
 
-def authenticate_user(username: str, password: str):
+def authenticate_user(username: str, password: str) -> Union[UserInDB, bool]:
     """
     :param username:
     :param password:
@@ -128,25 +128,50 @@ async def get_current_auth_data(
     return {"user": user, "token": token}
 
 
-async def get_current_active_user(
+async def check_and_get_user_from_auth_data(current_auth_data):
+    user = current_auth_data["user"]
+    if user.disabled:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return user
+
+
+async def secure_on_user_scope(
     current_auth_data: dict = Security(
-        get_current_auth_data, scopes=["user", "moderator", "admin"]
+        get_current_auth_data, scopes=["user", "moderator", "administrator"]
     )
 ) -> UserInDB:
     """
     :param current_auth_data:
     :return:
     """
-    user = current_auth_data["user"]
-    if user.disabled:
-        raise HTTPException(status_code=400, detail="Inactive user")
+    return await check_and_get_user_from_auth_data(current_auth_data)
 
-    return user
+
+async def secure_on_moderator_scope(
+    current_auth_data: dict = Security(
+        get_current_auth_data, scopes=["moderator", "administrator"]
+    )
+) -> str:
+    """
+    :param current_auth_data:
+    :return:
+    """
+    return await check_and_get_user_from_auth_data(current_auth_data)
+
+
+async def secure_on_admin_scope(
+    current_auth_data: dict = Security(get_current_auth_data, scopes=["administrator"])
+) -> str:
+    """
+    :param current_auth_data:
+    :return:
+    """
+    return await check_and_get_user_from_auth_data(current_auth_data)
 
 
 async def get_current_active_token(
     current_auth_data: dict = Security(
-        get_current_auth_data, scopes=["user", "moderator", "admin"]
+        get_current_auth_data, scopes=["user", "moderator", "administrator"]
     )
 ) -> str:
     """

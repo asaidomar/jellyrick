@@ -3,7 +3,7 @@ from string import Template
 from fastapi import Depends, APIRouter
 from mysql.connector import MySQLConnection
 
-from ...auth.jwt import get_current_active_user
+from ...auth.jwt import secure_on_admin_scope
 from ...config import Settings, get_settings
 from ...helpers.db.queries import DbQuery
 from ...helpers.services.mysql_connect_service import connect_to_database
@@ -29,7 +29,7 @@ def user_delete_route(
     username: str,
     connection: MySQLConnection = Depends(connect_to_database),
     settings: Settings = Depends(get_settings),
-    _: User = Depends(get_current_active_user),
+    _: User = Depends(secure_on_admin_scope),
 ) -> dict:
     """
     :param username: username to delete

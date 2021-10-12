@@ -5,11 +5,11 @@ from fastapi import Depends, APIRouter
 from fastapi_pagination import LimitOffsetPage, Page, paginate
 from mysql.connector import MySQLConnection
 
-from ...auth.jwt import get_current_active_user
+from ...auth.jwt import secure_on_admin_scope
 from ...config import Settings, get_settings
 from ...helpers.db.queries import DbQuery, AutonomousQuery
 from ...helpers.services.mysql_connect_service import connect_to_database
-from ...models.user import User
+from ...models.user import User, UserInDB
 
 router = APIRouter()
 
@@ -35,7 +35,7 @@ dec_dict = dict(
 def user_list_route(
     connection: MySQLConnection = Depends(connect_to_database),
     settings: Settings = Depends(get_settings),
-    _: User = Depends(get_current_active_user),
+    _: User = Depends(secure_on_admin_scope),
 ):
     """
     :param connection: db connection instance
@@ -55,8 +55,8 @@ def user_list_route(
 @router.get("/user/{username}", **dec_dict, response_model=User)
 def user_unique_route(
     username: Optional[str],
-    _: User = Depends(get_current_active_user),
-) -> str:
+    _: User = Depends(secure_on_admin_scope),
+) -> UserInDB:
     """
     :param username:
     :param _: current user => enable auth for the route

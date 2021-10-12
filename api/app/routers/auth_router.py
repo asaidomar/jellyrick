@@ -26,6 +26,16 @@ async def login_for_access_token(
     user = authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
+
+    for scope in form_data.scopes:
+        if scope == "user":
+            continue
+        # We check db rights from db, we skip user scope because all users can request user permission
+        if not getattr(user, scope):
+            raise HTTPException(
+                status_code=403, detail="You don't have enough permissions"
+            )
+
     access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
     access_token = create_access_token(
         data={"sub": user.username, "scopes": form_data.scopes},

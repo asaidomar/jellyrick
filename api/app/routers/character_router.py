@@ -25,7 +25,7 @@ QUERY_SELECT_CHARACTER = Template(
 
 dec_dict = dict(
     tags=["character"],
-    description="route to get character data from rock and morty universe",
+    description="route to get character data from rick and morty universe",
 )
 
 

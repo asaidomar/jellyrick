@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from fastapi_pagination import LimitOffsetPage, Page, paginate
 from mysql.connector import MySQLConnection
 
-from ..auth.jwt import get_current_active_user
+from ..auth.jwt import secure_on_user_scope
 from ..config import get_settings, Settings
 from ..helpers.db.queries import DbQuery
 from ..helpers.services.mysql_connect_service import connect_to_database
@@ -26,7 +26,7 @@ QUERY_SELECT_EPISODE = Template(
 
 dec_dict = dict(
     tags=["episode"],
-    description="route to get episode data from rock and morty universe",
+    description="route to get episode data from rick and morty universe",
 )
 
 

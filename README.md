@@ -95,6 +95,27 @@ apk add --update mysql-client mariadb-connector-c
 mysql -u rick -p'morty' -h db -D universe
 ```
 
+## Authentication
+
+To get result from the login route (/api/v1/login), the credentials in the request have to match the ones in the db.  
+The db passwords are not stored in plain text (they are hashed).  
+
+## Authorizations (JWT and Oauth2)
+
+Test authorization with these users and the interactive doc at "http://localhost/docs" (click Authorize):  
+
+| role | username | password |
+|---|---|---|
+|  user | johndoe  |  Secure_password1 |   
+| moderator | moderator | Secure_password3 |  
+| administrator | administrator | Secure_password4 |  
+
+- There are three Oauth2 scopes: "administrator", "moderator" and "user", they match the user roles configured in db.
+- Only users with administrator and moderator set to 1 in db can get a token (/api/v1/login) that enable access to "/user" and "/report" routes.
+- Only users with moderator set to 1 in db can get a token (/api/v1/login) that enable access to put delete "/comment" routes.
+- All users can access character episode and login routes.
+- For all other routes (user scope), users will need to send request with a JWT token previously provided by the login route.
+
 ## Tests 🔎
 
 ### Unit test
@@ -147,4 +168,7 @@ pytest --cov=api/app api/tests/
     - [x]  Add report route for CSV file download
     - [x]  Add report route for XLS file download
 - [x]  Backlog
-    - [x]  Add report route for CSV file download
+    - [x]  populate episode data about plots and thumbnails
+    - [x]  roles system for user and Oauth2 scope
+    - [x]  Db update on comments new, in review, rejected, approved, comment of comment
+    - [x]  Report routes on episode data
