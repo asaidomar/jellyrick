@@ -12,6 +12,7 @@
           "auth"
         ],
         "summary": "Login For Access Token",
+        "description": "Login route for auth with JWT and OAuth2\n:param form_data:\n:return:",
         "operationId": "login_for_access_token_api_v1_login_post",
         "requestBody": {
           "content": {
@@ -52,8 +53,9 @@
         "tags": [
           "auth"
         ],
-        "summary": "Protected Route",
-        "operationId": "protected_route_api_v1_logout_post",
+        "summary": "Logout Route",
+        "description": "Logout route that blacklist the json web token\n:param token:\n:return:",
+        "operationId": "logout_route_api_v1_logout_post",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -67,7 +69,492 @@
         "security": [
           {
             "OAuth2PasswordBearer": [
-              "me"
+              "user",
+              "moderator",
+              "administrator"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/comment": {
+      "get": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment List Route",
+        "description": "route to get comment data from rick and morty universe",
+        "operationId": "comment_list_route_api_v1_comment_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Page",
+              "minimum": 1,
+              "type": "integer",
+              "default": 1
+            },
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Size",
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "size",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_str_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "user",
+              "moderator",
+              "administrator"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/comment/limit-offset": {
+      "get": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment List Route",
+        "description": "route to get comment data from rick and morty universe",
+        "operationId": "comment_list_route_api_v1_comment_limit_offset_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_str_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "user",
+              "moderator",
+              "administrator"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/comment/{comment_id}": {
+      "get": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment Unique Route",
+        "description": "route to get comment data from rick and morty universe",
+        "operationId": "comment_unique_route_api_v1_comment__comment_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Comment Id",
+              "type": "integer"
+            },
+            "name": "comment_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Comment"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "user",
+              "moderator",
+              "administrator"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/comment/episode/{episode_id}": {
+      "post": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment Route",
+        "description": "route to post comment data about Rick and Morty episodes.",
+        "operationId": "comment_route_api_v1_comment_episode__episode_id__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Target Id",
+              "type": "integer"
+            },
+            "name": "target_id",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Comment"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentPostResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "user",
+              "moderator",
+              "administrator"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/comment/character/{character_id}": {
+      "post": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment On Character Post Route",
+        "description": "route to post comment data about Rick and Morty characters.",
+        "operationId": "comment_on_character_post_route_api_v1_comment_character__character_id__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Target Id",
+              "type": "integer"
+            },
+            "name": "target_id",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Comment"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "user",
+              "moderator",
+              "administrator"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/comment/character-in-episode": {
+      "post": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment Route With Parameters",
+        "description": "route to post comment data about Rick and Morty character in episode.",
+        "operationId": "comment_route_with_parameters_api_v1_comment_character_in_episode_post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Episode Id",
+              "type": "integer"
+            },
+            "name": "episode_id",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Character Id",
+              "type": "integer"
+            },
+            "name": "character_id",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Comment"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentPostResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "user",
+              "moderator",
+              "administrator"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/comment/{id}": {
+      "put": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment Put Route",
+        "description": "route to update comment data",
+        "operationId": "comment_put_route_api_v1_comment__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Comment Id",
+              "type": "integer"
+            },
+            "name": "comment_id",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Comment"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "moderator",
+              "administrator"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Comment Delete Route",
+        "description": "route to delete comment data",
+        "operationId": "comment_delete_route_api_v1_comment__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Comment Id",
+              "type": "integer"
+            },
+            "name": "comment_id",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "moderator",
+              "administrator"
             ]
           }
         ]
@@ -127,15 +614,22 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "administrator"
+            ]
+          }
+        ]
       },
-      "post": {
+      "put": {
         "tags": [
           "user"
         ],
-        "summary": "User Route With Parameters",
-        "description": "route to post user data.",
-        "operationId": "user_route_with_parameters_api_v1_user_post",
+        "summary": "User Update Route",
+        "description": "route to update user data.",
+        "operationId": "user_update_route_api_v1_user_put",
         "requestBody": {
           "content": {
             "application/json": {
@@ -165,7 +659,59 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "administrator"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "User Post Route",
+        "description": "route to post user data.",
+        "operationId": "user_post_route_api_v1_user_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserPost"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "administrator"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/user/limit-offset": {
@@ -222,7 +768,14 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "administrator"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/user/{username}": {
@@ -265,7 +818,14 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "administrator"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -304,97 +864,14 @@
               }
             }
           }
-        }
-      }
-    },
-    "/api/v1/comment/{id}": {
-      "put": {
-        "tags": [
-          "comment"
-        ],
-        "summary": "Comment Put Route",
-        "description": "route to update comment data",
-        "operationId": "comment_put_route_api_v1_comment__id__put",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Comment Id",
-              "type": "integer"
-            },
-            "name": "comment_id",
-            "in": "query"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/app__routers__comment__update_comment_router__CommentBody"
-              }
-            }
-          },
-          "required": true
         },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "comment"
-        ],
-        "summary": "Comment Delete Route",
-        "description": "route to delete comment data",
-        "operationId": "comment_delete_route_api_v1_comment__id__delete",
-        "parameters": [
+        "security": [
           {
-            "required": true,
-            "schema": {
-              "title": "Comment Id",
-              "type": "integer"
-            },
-            "name": "comment_id",
-            "in": "query"
+            "OAuth2PasswordBearer": [
+              "administrator"
+            ]
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
+        ]
       }
     },
     "/api/v1/episode": {
@@ -451,14 +928,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": [
-              "me"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/episode/limit-offset": {
@@ -515,14 +985,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": [
-              "me"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/episode/{episode_id}": {
@@ -721,352 +1184,14 @@
         }
       }
     },
-    "/api/v1/comment": {
+    "/api/v1/report/comment/xls": {
       "get": {
         "tags": [
-          "comment"
+          "report"
         ],
-        "summary": "Comment List Route",
-        "description": "route to get comment data from rick and morty universe",
-        "operationId": "comment_list_route_api_v1_comment_get",
-        "parameters": [
-          {
-            "required": false,
-            "schema": {
-              "title": "Page",
-              "minimum": 1,
-              "type": "integer",
-              "default": 1
-            },
-            "name": "page",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Size",
-              "maximum": 100,
-              "minimum": 1,
-              "type": "integer",
-              "default": 50
-            },
-            "name": "size",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Page_str_"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/comment/limit-offset": {
-      "get": {
-        "tags": [
-          "comment"
-        ],
-        "summary": "Comment List Route",
-        "description": "route to get comment data from rick and morty universe",
-        "operationId": "comment_list_route_api_v1_comment_limit_offset_get",
-        "parameters": [
-          {
-            "required": false,
-            "schema": {
-              "title": "Limit",
-              "maximum": 100,
-              "minimum": 1,
-              "type": "integer",
-              "default": 50
-            },
-            "name": "limit",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Offset",
-              "minimum": 0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "offset",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LimitOffsetPage_str_"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/comment/{comment_id}": {
-      "get": {
-        "tags": [
-          "comment"
-        ],
-        "summary": "Comment Unique Route",
-        "description": "route to get comment data from rick and morty universe",
-        "operationId": "comment_unique_route_api_v1_comment__comment_id__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Comment Id",
-              "type": "integer"
-            },
-            "name": "comment_id",
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/comment/episode/{episode_id}": {
-      "post": {
-        "tags": [
-          "comment"
-        ],
-        "summary": "Comment Route",
-        "description": "route to post comment data about Rick and Morty episodes.",
-        "operationId": "comment_route_api_v1_comment_episode__episode_id__post",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Target Id",
-              "type": "integer"
-            },
-            "name": "target_id",
-            "in": "query"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/app__routers__comment__post_comment_router__CommentBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/comment/character/{character_id}": {
-      "post": {
-        "tags": [
-          "comment"
-        ],
-        "summary": "Comment Route",
-        "description": "route to post comment data about Rick and Morty characters.",
-        "operationId": "comment_route_api_v1_comment_character__character_id__post",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Target Id",
-              "type": "integer"
-            },
-            "name": "target_id",
-            "in": "query"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/app__routers__comment__post_comment_router__CommentBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/comment/character-in-episode": {
-      "post": {
-        "tags": [
-          "comment"
-        ],
-        "summary": "Comment Route With Parameters",
-        "description": "route to post comment data about Rick and Morty character in episode.",
-        "operationId": "comment_route_with_parameters_api_v1_comment_character_in_episode_post",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Episode Id",
-              "type": "integer"
-            },
-            "name": "episode_id",
-            "in": "query"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Character Id",
-              "type": "integer"
-            },
-            "name": "character_id",
-            "in": "query"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/app__routers__comment__post_comment_router__CommentBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/me/": {
-      "get": {
-        "summary": "Read Users Me",
-        "operationId": "read_users_me_users_me__get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": [
-              "me"
-            ]
-          }
-        ]
-      }
-    },
-    "/users/me/items/": {
-      "get": {
-        "summary": "Read Own Items",
-        "operationId": "read_own_items_users_me_items__get",
+        "summary": "Report Route",
+        "description": "route to get comment data report in xls format",
+        "operationId": "report_route_api_v1_report_comment_xls_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -1080,17 +1205,20 @@
         "security": [
           {
             "OAuth2PasswordBearer": [
-              "items",
-              "me"
+              "administrator"
             ]
           }
         ]
       }
     },
-    "/status/": {
+    "/api/v1/report/comment/csv": {
       "get": {
-        "summary": "Read System Status",
-        "operationId": "read_system_status_status__get",
+        "tags": [
+          "report"
+        ],
+        "summary": "Report Route",
+        "description": "route to get comment data report in csv format",
+        "operationId": "report_route_api_v1_report_comment_csv_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -1103,7 +1231,36 @@
         },
         "security": [
           {
-            "OAuth2PasswordBearer": []
+            "OAuth2PasswordBearer": [
+              "administrator"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/report/episode/csv": {
+      "get": {
+        "tags": [
+          "report"
+        ],
+        "summary": "Report Route",
+        "description": "route to get comment data report in xls format",
+        "operationId": "report_route_api_v1_report_episode_csv_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "administrator"
+            ]
           }
         ]
       }
@@ -1144,6 +1301,56 @@
           "client_secret": {
             "title": "Client Secret",
             "type": "string"
+          }
+        }
+      },
+      "Comment": {
+        "title": "Comment",
+        "type": "object",
+        "properties": {
+          "content": {
+            "title": "Content",
+            "type": "string",
+            "default": "Nice comment update example !"
+          },
+          "new": {
+            "title": "New",
+            "type": "boolean",
+            "default": true
+          },
+          "in_review": {
+            "title": "In Review",
+            "type": "boolean",
+            "default": false
+          },
+          "rejected": {
+            "title": "Rejected",
+            "type": "boolean",
+            "default": false
+          },
+          "approved": {
+            "title": "Approved",
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "example": {
+          "content": "Nice comment update example !"
+        }
+      },
+      "CommentPostResponse": {
+        "title": "CommentPostResponse",
+        "type": "object",
+        "properties": {
+          "info": {
+            "title": "Info",
+            "type": "string",
+            "default": "Comment has been successfully added to resource ? with id 1"
+          },
+          "comment_id": {
+            "title": "Comment Id",
+            "type": "integer",
+            "default": 1
           }
         }
       },
@@ -1228,6 +1435,67 @@
           }
         }
       },
+      "SubUserPost": {
+        "title": "SubUserPost",
+        "required": [
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "full_name": {
+            "title": "Full Name",
+            "type": "string"
+          },
+          "disabled": {
+            "title": "Disabled",
+            "type": "boolean"
+          },
+          "administrator": {
+            "title": "Administrator",
+            "type": "boolean"
+          },
+          "reviewer": {
+            "title": "Reviewer",
+            "type": "boolean"
+          },
+          "moderator": {
+            "title": "Moderator",
+            "type": "boolean"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string",
+            "default": "secure_password"
+          },
+          "password1": {
+            "title": "Password1",
+            "type": "string",
+            "default": "Secure_password1"
+          },
+          "password2": {
+            "title": "Password2",
+            "type": "string",
+            "default": "Secure_password1"
+          }
+        },
+        "example": {
+          "username": "johndoe4446",
+          "full_name": "John Doe",
+          "email": "johndoe@example.com",
+          "disabled": false,
+          "administrator": false,
+          "reviewer": false,
+          "moderator": false
+        }
+      },
       "Token": {
         "title": "Token",
         "required": [
@@ -1283,7 +1551,7 @@
           }
         },
         "example": {
-          "username": "johndoe",
+          "username": "johndoe4446",
           "full_name": "John Doe",
           "email": "johndoe@example.com",
           "disabled": false,
@@ -1295,16 +1563,22 @@
       "UserPost": {
         "title": "UserPost",
         "type": "object",
-        "properties": {},
+        "properties": {
+          "content": {
+            "$ref": "#/components/schemas/SubUserPost"
+          }
+        },
         "example": {
           "content": {
-            "username": "johndoe",
+            "username": "johndoe4446",
             "full_name": "John Doe",
             "email": "johndoe@example.com",
             "disabled": false,
             "administrator": false,
             "reviewer": false,
-            "moderator": false
+            "moderator": false,
+            "password1": "Secure_password1",
+            "password2": "Secure_password1"
           }
         }
       },
@@ -1333,39 +1607,6 @@
             "type": "string"
           }
         }
-      },
-      "app__routers__comment__post_comment_router__CommentBody": {
-        "title": "CommentBody",
-        "type": "object",
-        "properties": {
-          "content": {
-            "title": "Content",
-            "type": "string",
-            "default": "Nice comment example on episode !"
-          }
-        }
-      },
-      "app__routers__comment__update_comment_router__CommentBody": {
-        "title": "CommentBody",
-        "type": "object",
-        "properties": {
-          "content": {
-            "title": "Content",
-            "type": "string",
-            "default": "Nice comment update example !"
-          }
-        }
-      },
-      "app__routers__user__update_user_router__CommentBody": {
-        "title": "CommentBody",
-        "type": "object",
-        "properties": {
-          "content": {
-            "title": "Content",
-            "type": "string",
-            "default": "Nice comment update example !"
-          }
-        }
       }
     },
     "securitySchemes": {
@@ -1374,8 +1615,9 @@
         "flows": {
           "password": {
             "scopes": {
-              "me": "Read information about the current user.",
-              "items": "Read items."
+              "user": "User basic rights",
+              "moderator": "Can update comment",
+              "administrator": "All rights"
             },
             "tokenUrl": "/api/v1/login"
           }
