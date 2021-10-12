@@ -5,7 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Implement JWT and OAuth2
+## [0.0.6] 2021-10-12
+
+### Added
+- Bug fixes
 
 ## [0.0.5] 2021-10-11
 
@@ -37,6 +40,7 @@ Implement JWT and OAuth2
 - api route to get episode and character data
 - Base files for project (README, CHANGELOG, gitignore)
 
+[0.0.6]: https://github.com/benjmathias/jellyrick/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/benjmathias/jellyrick/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/benjmathias/jellyrick/compare/v0.0.3...v0.0.4
 [0.0.3]: https://github.com/benjmathias/jellyrick/compare/v0.0.2...v0.0.3
