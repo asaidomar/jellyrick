@@ -1,5 +1,6 @@
-import tempfile
 import itertools
+import tempfile
+
 import pyexcel
 from fastapi import Depends, APIRouter
 from fastapi.responses import FileResponse
@@ -75,6 +76,7 @@ def report_route(
 
 
 # *********************** GET /report/episode/csv       *********************** #
+
 QUERY_SELECT_EPISODE = """
 SELECT episode_id
 FROM episode

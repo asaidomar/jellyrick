@@ -25,7 +25,7 @@ async def login_for_access_token(
     """
     user = authenticate_user(form_data.username, form_data.password)
     if not user:
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
+        raise HTTPException(status_code=403, detail="Incorrect username or password")
 
     for scope in form_data.scopes:
         if scope == "user":

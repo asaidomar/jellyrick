@@ -1,5 +1,5 @@
 from string import Template
-from typing import Any, List, Tuple
+from typing import Any, List, Tuple, Union
 
 from mysql.connector import MySQLConnection, Error as MySQLError
 
@@ -44,7 +44,7 @@ class DbQuery:
 # we should create an autonomous db query function here
 class AutonomousQuery:
     @staticmethod
-    def get_db_user(username: str) -> UserInDB:
+    def get_db_user(username: str) -> Union[UserInDB, bool]:
         """
         get a user data from db
         :param username:
@@ -58,9 +58,11 @@ class AutonomousQuery:
             """
         ).substitute(user=username)
 
-        res = DbQuery(connect_to_database(), query_str).commit_query(return_value=True)[
-            0
-        ]
+        res = DbQuery(connect_to_database(), query_str).commit_query(return_value=True)
+        if not res:
+            return False
+
+        res = res[0]
         if res:
             return UserInDB(
                 username=res[0],

@@ -111,6 +111,7 @@ Test authorization with these users and the interactive doc at "http://localhost
 | administrator | administrator | Secure_password4 |  
 
 - There are three Oauth2 scopes: "administrator", "moderator" and "user", they match the user roles configured in db.
+- When requesting a token with /login, user must select a scope
 - Only users with administrator and moderator set to 1 in db can get a token (/api/v1/login) that enable access to "/user" and "/report" routes.
 - Only users with moderator set to 1 in db can get a token (/api/v1/login) that enable access to put delete "/comment" routes.
 - All users can access character episode and login routes.
@@ -123,19 +124,21 @@ Test authorization with these users and the interactive doc at "http://localhost
 To run the unit tests of this project and show coverage, run these commands :
 
 ```bash
+# It's better to enter a virtualenv
 pip3 install pytest pytest-cov
+pip3 install -r api/requirements.txt
 # cd to this project root
 pytest --cov=api/app api/tests/
 ```
 
 ## Tasks 🖊️
 
-- [x]  Init base files (15 minutes)
+- [x]  Init base files (15m)
     - [x]  Create project on github
     - [x]  Add readme
     - [x]  Add .gitignore
     - [x]  Add CHANGELOG
-- [x]  Feature 1
+- [x]  Feature 1 (2h)
     - [x]  DB dev environment
         - [x]  Dockerfile
         - [x]  docker-compose
@@ -152,22 +155,23 @@ pytest --cov=api/app api/tests/
     - [x]  Write unit test for the two routes
     - [ ]  BONUS : more unit tests (fail case test and others)
     - [ ]  BONUS : Write functional test (fastapi.testclient)
-- [x]  Feature 2
+- [x]  Feature 2 (3h)
     - [x]  DB structure for comment table
     - [x]  Populate data for new table
     - [x]  Write CRUD routes for comments
-- [x]  Feature 3
+- [x]  Feature 3 (1h)
     - [x]  Pagination system
     - [x]  Add filters
-- [x]  Feature 4
+- [x]  Feature 4 (2h)
     - [x]  Implement JWT and OAuth2 in fastapi with users variable as faked db
     - [x]  Create dev.env.tpl and use it with docker-compose
     - [x]  Add USER table in MYSQL
     - [x]  Link JWT with DB
-- [x]  Feature 5
+    - [x]  CRUD routes
+- [x]  Feature 5 (30mn)
     - [x]  Add report route for CSV file download
     - [x]  Add report route for XLS file download
-- [x]  Backlog
+- [x]  Backlog (2h)
     - [x]  populate episode data about plots and thumbnails
     - [x]  roles system for user and Oauth2 scope
     - [x]  Db update on comments new, in review, rejected, approved, comment of comment

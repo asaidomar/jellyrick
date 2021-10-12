@@ -18,8 +18,8 @@ INSERT INTO `user` (username, full_name, email, hashed_password, disabled, admin
 VALUES ('$username', '$full_name', '$email', '$hashed_password', 
         '$disabled', '$administrator', '$reviewer', '$moderator')
 ON DUPLICATE KEY UPDATE full_name=VALUES(full_name),email=VALUES(email),
-            hashed_password=VALUES(hashed_password),disabled=VALUES(disabled),administrator=VALUES(administrator),
-            reviewer=VALUES(reviewer),moderator=VALUES(moderator);
+            hashed_password=VALUES(hashed_password),disabled=VALUES(disabled),
+            administrator=VALUES(administrator),reviewer=VALUES(reviewer),moderator=VALUES(moderator);
     """
 )
 
