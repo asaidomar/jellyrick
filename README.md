@@ -6,10 +6,10 @@ API to post comments about Rick & Morty universe
 
 Prerequisites:
 
-- Linux, Mac or WSL environment
-- git installed (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- docker and docker-compose installed (https://docs.docker.com/compose/install/)
-- python3, python3-pip installed (https://pip.pypa.io/en/stable/installation/)
+- Linux, Mac or WSL environment.  
+- git installed (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).  
+- docker and docker-compose installed (https://docs.docker.com/engine/install/ubuntu/) (https://docs.docker.com/compose/install/) (https://docs.docker.com/engine/install/linux-postinstall/).  
+- python3, python3-pip installed (https://pip.pypa.io/en/stable/installation/).  
 
 ```bash
 git clone git@github.com:benjmathias/jellyrick.git
@@ -29,6 +29,10 @@ docker-compose -f dev.docker-compose.yml logs -f
 Access the interactive openapi docs with :
 
 - http://localhost/docs
+
+Or see it on a deployed version there :
+
+- https://datas.to/docs
 
 See the json openapi schema here :
 - [openapi.json](./docs/openapi.json)
