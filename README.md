@@ -95,12 +95,12 @@ apk add --update mysql-client mariadb-connector-c
 mysql -u rick -p'morty' -h db -D universe
 ```
 
-## Authentication
+## Authentication 🔑
 
 To get result from the login route (/api/v1/login), the credentials in the request have to match the ones in the db.  
 The db passwords are not stored in plain text (they are hashed).  
 
-## Authorizations (JWT and Oauth2)
+## Authorizations (JWT and Oauth2) ✊
 
 Test authorization with these users and the interactive doc at "http://localhost/docs" (click Authorize):  
 
@@ -111,7 +111,7 @@ Test authorization with these users and the interactive doc at "http://localhost
 | administrator | administrator | Secure_password4 |  
 
 - There are three Oauth2 scopes: "administrator", "moderator" and "user", they match the user roles configured in db.
-- When requesting a token with /login, user must select a scope
+- When requesting a token with /login, user must select a scope. 
 - Only users with administrator and moderator set to 1 in db can get a token (/api/v1/login) that enable access to "/user" and "/report" routes.
 - Only users with moderator set to 1 in db can get a token (/api/v1/login) that enable access to put delete "/comment" routes.
 - All users can access character episode and login routes.
@@ -119,7 +119,7 @@ Test authorization with these users and the interactive doc at "http://localhost
 
 ## Tests 🔎
 
-### Unit test
+### Unit test (71 %)
 
 To run the unit tests of this project and show coverage, run these commands :
 
@@ -176,3 +176,16 @@ pytest --cov=api/app api/tests/
     - [x]  roles system for user and Oauth2 scope
     - [x]  Db update on comments new, in review, rejected, approved, comment of comment
     - [x]  Report routes on episode data
+
+
+## Could have been done 🙃
+
+- Duplicate code refactoring
+- Better handling of errors
+- Naming uniformity of db col
+- Logout handling with redis
+- Pydantic email validation
+- Episode short name in db
+- Async everywhere
+- Routes to change comment status
+- More unit tests
