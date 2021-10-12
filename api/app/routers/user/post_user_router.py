@@ -4,7 +4,7 @@ from typing import Dict
 from fastapi import Depends, APIRouter
 from mysql.connector import MySQLConnection
 
-from ...auth.jwt import get_password_hash, get_current_active_user
+from ...auth.jwt import get_password_hash, secure_on_admin_scope
 from ...helpers.db.queries import DbQuery
 from ...helpers.services.mysql_connect_service import connect_to_database
 from ...models.user import UserPost, User
@@ -29,7 +29,7 @@ VALUES ('$username', '$full_name', '$email', '$hashed_password',
 def user_post_route(
     body: UserPost,
     connection: MySQLConnection = Depends(connect_to_database),
-    _: User = Depends(get_current_active_user),
+    _: User = Depends(secure_on_admin_scope),
 ) -> Dict[str, str]:
     """
     :param body:

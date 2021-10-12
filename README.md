@@ -42,24 +42,38 @@ Change the python source code and see the front reload live, enjoy !
 
 Follow the "dev quick start" step above first !
 
-- Get data from api with a python script ([script](./db/script/write_from_web_to_json.py)) :
+- Get **episode and character** data from api with a python script ([script](db/script/ep_char_write_from_web_to_json.py)) :
 
 ```bash
 pip3 install requests
 # cd to this project root
 cd db/script
-chmod +x write_from_web_to_json.py
-./write_from_web_to_json.py "../data_source"
+chmod +x ep_char_write_from_web_to_json.py
+# ./ep_char_write_from_web_to_json.py <OUTPUT_PATH>
+./ep_char_write_from_web_to_json.py "../data_source"
 ```
 
-- Script usage to insert data from json file to DB ([script](./db/script/insert_from_json_to_db.py)) :
+- Get **metadata** about Rick and Morty from api with a python script ([script](db/script/metadata_write_from_web_to_json.py)) :
+
+```bash
+pip3 install requests
+# cd to this project root
+cd db/script
+chmod +x metadata_write_from_web_to_json.py
+# Create an account to get api key from imdb here (not official imdb api) : https://imdb-api.com/api
+export API_KEY_IMDB=<YOUR_API_KEY>
+# /metadata_write_from_web_to_json.py <OUTPUT_PATH> <SEASON_TOTAL_NUMBER> <API_KEY_IMDB>
+./metadata_write_from_web_to_json.py "../data_source" 5 "${API_KEY_IMDB}"
+```
+
+- Script usage to insert data from json file to DB ([script](db/script/ep_char_insert_from_json_to_db.py)) :
 
 ```bash
 pip3 install mysql-connector-python
 # cd to this project root
 cd db/script
-chmod +x insert_from_json_to_db.py
-./insert_from_json_to_db.py "universe" "root" "root" "127.0.0.1" "../data_source"
+chmod +x ep_char_insert_from_json_to_db.py
+./ep_char_insert_from_json_to_db.py "universe" "root" "root" "127.0.0.1" "../data_source"
 ```
 
 You can check with adminer front that the data has been inserted, connect with "universe" database and "root" "root"
@@ -81,6 +95,28 @@ apk add --update mysql-client mariadb-connector-c
 mysql -u rick -p'morty' -h db -D universe
 ```
 
+## Authentication
+
+To get result from the login route (/api/v1/login), the credentials in the request have to match the ones in the db.  
+The db passwords are not stored in plain text (they are hashed).  
+
+## Authorizations (JWT and Oauth2)
+
+Test authorization with these users and the interactive doc at "http://localhost/docs" (click Authorize):  
+
+| role | username | password |
+|---|---|---|
+|  user | johndoe  |  Secure_password1 |   
+| moderator | moderator | Secure_password3 |  
+| administrator | administrator | Secure_password4 |  
+
+- There are three Oauth2 scopes: "administrator", "moderator" and "user", they match the user roles configured in db.
+- When requesting a token with /login, user must select a scope
+- Only users with administrator and moderator set to 1 in db can get a token (/api/v1/login) that enable access to "/user" and "/report" routes.
+- Only users with moderator set to 1 in db can get a token (/api/v1/login) that enable access to put delete "/comment" routes.
+- All users can access character episode and login routes.
+- For all other routes (user scope), users will need to send request with a JWT token previously provided by the login route.
+
 ## Tests 🔎
 
 ### Unit test
@@ -88,26 +124,28 @@ mysql -u rick -p'morty' -h db -D universe
 To run the unit tests of this project and show coverage, run these commands :
 
 ```bash
+# It's better to enter a virtualenv
 pip3 install pytest pytest-cov
+pip3 install -r api/requirements.txt
 # cd to this project root
 pytest --cov=api/app api/tests/
 ```
 
 ## Tasks 🖊️
 
-- [x]  Init base files (15 minutes)
+- [x]  Init base files (15m)
     - [x]  Create project on github
     - [x]  Add readme
     - [x]  Add .gitignore
     - [x]  Add CHANGELOG
-- [x]  Feature 1
+- [x]  Feature 1 (2h)
     - [x]  DB dev environment
         - [x]  Dockerfile
         - [x]  docker-compose
     - [x]  Init the db structure, dump it, put the dump in db container entrypoint
     - [x]  Retrieve characters and episodes data from the web (rickandmortyapi.com) and write it to
-      JSON : ([script](./db/script/write_from_web_to_json.py), [data_example](./db/data_source/rick_data_episode.json))
-    - [x]  Python import script ([script](./db/script/insert_from_json_to_db.py))
+      JSON : ([script](db/script/ep_char_write_from_web_to_json.py), [data_example](./db/data_source/rick_data_episode.json))
+    - [x]  Python import script ([script](db/script/ep_char_insert_from_json_to_db.py))
     - [x]  Fastapi base structure
     - [x]  api dev environment
         - [x]  Dockerfile
@@ -117,15 +155,24 @@ pytest --cov=api/app api/tests/
     - [x]  Write unit test for the two routes
     - [ ]  BONUS : more unit tests (fail case test and others)
     - [ ]  BONUS : Write functional test (fastapi.testclient)
-- [x]  Feature 2
+- [x]  Feature 2 (3h)
     - [x]  DB structure for comment table
     - [x]  Populate data for new table
     - [x]  Write CRUD routes for comments
-- [x]  Feature 3
+- [x]  Feature 3 (1h)
     - [x]  Pagination system
     - [x]  Add filters
-- [x]  Feature 4
+- [x]  Feature 4 (2h)
     - [x]  Implement JWT and OAuth2 in fastapi with users variable as faked db
     - [x]  Create dev.env.tpl and use it with docker-compose
     - [x]  Add USER table in MYSQL
     - [x]  Link JWT with DB
+    - [x]  CRUD routes
+- [x]  Feature 5 (30mn)
+    - [x]  Add report route for CSV file download
+    - [x]  Add report route for XLS file download
+- [x]  Backlog (2h)
+    - [x]  populate episode data about plots and thumbnails
+    - [x]  roles system for user and Oauth2 scope
+    - [x]  Db update on comments new, in review, rejected, approved, comment of comment
+    - [x]  Report routes on episode data

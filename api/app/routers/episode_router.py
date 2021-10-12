@@ -3,13 +3,12 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends
 from fastapi_pagination import LimitOffsetPage, Page, paginate
+from fastapi_pagination.bases import AbstractPage, T
 from mysql.connector import MySQLConnection
 
-from ..auth.jwt import get_current_active_user
-from ..config import get_settings, Settings
 from ..helpers.db.queries import DbQuery
+from ..helpers.services.checkers import check_item_not_found
 from ..helpers.services.mysql_connect_service import connect_to_database
-from ..models.user import User
 
 router = APIRouter()
 
@@ -19,14 +18,14 @@ router = APIRouter()
 
 QUERY_SELECT_EPISODE = Template(
     """
-    SELECT `$episode_name_col_name` FROM `$episode_table_name`
-    WHERE `$episode_id_col_name` LIKE '$episode_id_value';
+    SELECT `episode_name` FROM `episode`
+    WHERE `episode_id` LIKE '$episode_id_value';
     """
 )
 
 dec_dict = dict(
     tags=["episode"],
-    description="route to get episode data from rock and morty universe",
+    description="route to get episode data from rick and morty universe",
 )
 
 
@@ -34,17 +33,13 @@ dec_dict = dict(
 @router.get("/episode", response_model=Page[str], **dec_dict)
 def episode_list_route(
     connection: MySQLConnection = Depends(connect_to_database),
-    settings: Settings = Depends(get_settings),
-):
+) -> AbstractPage[T]:
     """
+    List episodes of rick and morty
     :param connection: db connection instance
-    :param settings:
     :return: json with episode data
     """
     query_str = QUERY_SELECT_EPISODE.substitute(
-        episode_table_name=settings.table.names.episode,
-        episode_name_col_name=settings.table.episode_col_names.episode_name,
-        episode_id_col_name=settings.table.episode_col_names.episode_id,
         episode_id_value="%",
     )
     db_result = DbQuery(connection, query_str).commit_query(return_value=True)
@@ -55,19 +50,16 @@ def episode_list_route(
 def episode_unique_route(
     episode_id: Optional[int],
     connection: MySQLConnection = Depends(connect_to_database),
-    settings: Settings = Depends(get_settings),
 ) -> str:
     """
+    get an episode name of rick and morty data based on its id
     :param episode_id:
     :param connection: db connection instance
-    :param settings:
     :return: json with episode data
     """
     query_str = QUERY_SELECT_EPISODE.substitute(
-        episode_table_name=settings.table.names.episode,
-        episode_name_col_name=settings.table.episode_col_names.episode_name,
-        episode_id_col_name=settings.table.episode_col_names.episode_id,
         episode_id_value=episode_id,
     )
     db_result = DbQuery(connection, query_str).commit_query(return_value=True)
+    check_item_not_found(db_result)
     return db_result[0][0]

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-""" USAGE: 'chmod +x write_from_web_to_json.py && ./write_from_web_to_json.py <OUTPUT_PATH>'"""
+""" USAGE: 'chmod +x ep_char_write_from_web_to_json.py && ./ep_char_write_from_web_to_json.py <OUTPUT_PATH>'"""
 
 import json
 import sys

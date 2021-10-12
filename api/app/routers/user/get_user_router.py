@@ -1,15 +1,14 @@
-from string import Template
 from typing import Optional
 
 from fastapi import Depends, APIRouter
 from fastapi_pagination import LimitOffsetPage, Page, paginate
 from mysql.connector import MySQLConnection
 
-from ...auth.jwt import get_current_active_user
-from ...config import Settings, get_settings
+from ...auth.jwt import secure_on_admin_scope
 from ...helpers.db.queries import DbQuery, AutonomousQuery
+from ...helpers.services.checkers import check_item_not_found
 from ...helpers.services.mysql_connect_service import connect_to_database
-from ...models.user import User
+from ...models.user import User, UserInDB
 
 router = APIRouter()
 
@@ -17,12 +16,9 @@ router = APIRouter()
 # *********************** GET /user/{user_id} *********************** #
 # *********************** GET /user/limit-offset *********************** #
 
-QUERY_SELECT_USER = Template(
+QUERY_SELECT_USER = """
+    SELECT `username` FROM `user`;
     """
-    SELECT `$username_col_name` FROM `$user_table_name`
-    WHERE `$username_col_name` LIKE '$username_value';
-    """
-)
 
 dec_dict = dict(
     tags=["user"],
@@ -34,20 +30,14 @@ dec_dict = dict(
 @router.get("/user", response_model=Page[str], **dec_dict)
 def user_list_route(
     connection: MySQLConnection = Depends(connect_to_database),
-    settings: Settings = Depends(get_settings),
-    _: User = Depends(get_current_active_user),
+    _: User = Depends(secure_on_admin_scope),
 ):
     """
     :param connection: db connection instance
-    :param settings:
     :param _: current user => enable auth for the route
     :return: json with user data
     """
-    query_str = QUERY_SELECT_USER.substitute(
-        user_table_name=settings.table.names.user,
-        username_col_name=settings.table.user_col_names.username,
-        username_value="%",
-    )
+    query_str = QUERY_SELECT_USER
     db_result = DbQuery(connection, query_str).commit_query(return_value=True)
     return paginate([i[0] for i in db_result])
 
@@ -55,11 +45,13 @@ def user_list_route(
 @router.get("/user/{username}", **dec_dict, response_model=User)
 def user_unique_route(
     username: Optional[str],
-    _: User = Depends(get_current_active_user),
-) -> str:
+    _: User = Depends(secure_on_admin_scope),
+) -> UserInDB:
     """
     :param username:
     :param _: current user => enable auth for the route
     :return: json with user data
     """
-    return AutonomousQuery.get_db_user(username)
+    user = AutonomousQuery.get_db_user(username)
+    check_item_not_found(user)
+    return user

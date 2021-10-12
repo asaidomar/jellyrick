@@ -15,8 +15,12 @@ RUN chmod +x /dev.entrypoint.sh /wait-for-it.sh
 
 RUN mkdir /db
 COPY ./db/data_source/ /db/data_source
+
+# We copy data providers script in case we test them inside the containers
 COPY ./db/script/ /db/script
-RUN chmod +x /db/script/insert_from_json_to_db.py /db/script/write_from_web_to_json.py
+RUN chmod +x /db/script/ep_char_insert_from_json_to_db.py \
+    /db/script/ep_char_write_from_web_to_json.py \
+    /db/script/metadata_write_from_web_to_json.py
 
 
 RUN apk --no-cache add musl-dev libffi-dev gcc bash \

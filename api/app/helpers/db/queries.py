@@ -1,5 +1,5 @@
 from string import Template
-from typing import Any
+from typing import Any, List, Tuple, Union
 
 from mysql.connector import MySQLConnection, Error as MySQLError
 
@@ -17,14 +17,24 @@ class DbQuery:
             else [query]
         )
 
-    def commit_query(self, return_value: bool = False) -> Any:
+    def commit_query(
+        self, return_value: bool = False, last_return_value: bool = False
+    ) -> List[Tuple]:
+        """
+        commit a query and get a result if return value True
+        :param return_value:
+        :param last_return_value:
+        :return:
+        """
         with self.__connection.cursor(buffered=True) as cursor:
-            for query in self.__queries:
+            for ind, query in enumerate(self.__queries):
                 try:
                     cursor.execute(query)
                     self.__connection.commit()
                     if return_value:
                         return cursor.fetchall()
+                    if ind == len(self.__queries) and last_return_value:
+                        return cursor.fetch()
                 except MySQLError as e:
                     self.__connection.rollback()
                     raise e
@@ -34,7 +44,12 @@ class DbQuery:
 # we should create an autonomous db query function here
 class AutonomousQuery:
     @staticmethod
-    def get_db_user(username: str):
+    def get_db_user(username: str) -> Union[UserInDB, bool]:
+        """
+        get a user data from db
+        :param username:
+        :return:
+        """
         query_str = Template(
             """
     SELECT username, full_name, email, hashed_password, disabled, administrator, reviewer, moderator 
@@ -43,9 +58,11 @@ class AutonomousQuery:
             """
         ).substitute(user=username)
 
-        res = DbQuery(connect_to_database(), query_str).commit_query(return_value=True)[
-            0
-        ]
+        res = DbQuery(connect_to_database(), query_str).commit_query(return_value=True)
+        if not res:
+            return False
+
+        res = res[0]
         if res:
             return UserInDB(
                 username=res[0],
