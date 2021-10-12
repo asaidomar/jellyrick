@@ -4,7 +4,7 @@ from typing import Dict
 from fastapi import Depends, APIRouter
 from mysql.connector import MySQLConnection
 
-from ...auth.jwt import get_password_hash, get_current_active_user
+from ...auth.jwt import get_password_hash, secure_on_admin_scope
 from ...helpers.db.queries import DbQuery
 from ...helpers.services.mysql_connect_service import connect_to_database
 from ...models.user import UserPost, User
@@ -18,8 +18,8 @@ INSERT INTO `user` (username, full_name, email, hashed_password, disabled, admin
 VALUES ('$username', '$full_name', '$email', '$hashed_password', 
         '$disabled', '$administrator', '$reviewer', '$moderator')
 ON DUPLICATE KEY UPDATE full_name=VALUES(full_name),email=VALUES(email),
-            hashed_password=VALUES(hashed_password),disabled=VALUES(disabled),administrator=VALUES(administrator),
-            reviewer=VALUES(reviewer),moderator=VALUES(moderator);
+            hashed_password=VALUES(hashed_password),disabled=VALUES(disabled),
+            administrator=VALUES(administrator),reviewer=VALUES(reviewer),moderator=VALUES(moderator);
     """
 )
 
@@ -32,7 +32,7 @@ ON DUPLICATE KEY UPDATE full_name=VALUES(full_name),email=VALUES(email),
 def user_update_route(
     body: UserPost,
     connection: MySQLConnection = Depends(connect_to_database),
-    _: User = Depends(get_current_active_user),
+    _: User = Depends(secure_on_admin_scope),
 ) -> Dict[str, str]:
     """
     :param body:
